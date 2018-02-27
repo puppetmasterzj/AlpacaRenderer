@@ -1,4 +1,5 @@
 #include "ApcDevice.h"
+#include <iostream>
 
 
 
@@ -88,13 +89,67 @@ void ApcDevice::DrawLine(int x0, int y0, int x1, int y1)
 	}
 }
 
+//https://zhuanlan.zhihu.com/p/20148016?refer=alchemelon
 void ApcDevice::DrawTrangle(int x0, int y0, int x1, int y1, int x2, int y2)
 {
-	//平底三角形
-	for (int y = y0; y < y1; y++)
+	//按照y进行排序，使y0 < y1 < y2
+	if (y1 < y0)
+	{
+		std::swap(x0, x1);
+		std::swap(y0, y1);
+	}
+	if (y2 < y0)
+	{
+		std::swap(x0, x2);
+		std::swap(y0, y2);
+	}
+	if (y2 < y1)
+	{
+		std::swap(x1, x2);
+		std::swap(y1, y2);
+	}
+
+	if (y0 == y1)	//平顶三角形
+	{
+		DrawTopFlatTrangle(x0, y0, x1, y1, x2, y2);
+	}
+	else if (y1 == y2) //平底三角形
+	{
+		DrawBottomFlatTrangle(x0, y0, x1, y1, x2, y2);
+	}
+	else			//拆分为一个平顶三角形和一个平底三角形
+	{
+		//中心点为直线(x0, y0)，(x2, y2)上取y1的点
+		int x3 = (y1 - y0) * (x2 - x0) / (y2 - y0) + x0;
+		int y3 = y1;
+
+		//进行x排序，此处约定x2较小
+		if (x1 > x3)
+		{
+			std::swap(x1, x3);
+			std::swap(y1, y3);
+		}
+		DrawBottomFlatTrangle(x0, y0, x1, y1, x3, y3);
+		DrawTopFlatTrangle(x1, y1, x3, y3, x2, y2);
+	}
+}
+
+void ApcDevice::DrawBottomFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y2)
+{
+	for (int y = y0; y <= y1; y++)
 	{
 		int xl = (y - y1) * (x0 - x1) / (y0 - y1) + x1;
 		int xr = (y - y2) * (x0 - x2) / (y0 - y2) + x2;
+		DrawLine(xl, y, xr, y);
+	}
+}
+
+void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y2)
+{
+	for (int y = y0; y <= y2; y++)
+	{
+		int xl = (y - y0) * (x2 - x0) / (y2 - y0) + x0;
+		int xr = (y - y1) * (x2 - x1) / (y2 - y1) + x1;
 		DrawLine(xl, y, xr, y);
 	}
 }

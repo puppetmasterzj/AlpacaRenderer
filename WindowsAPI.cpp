@@ -69,13 +69,6 @@ LRESULT WindowsAPI::OnEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		hdc = BeginPaint(hwnd, &ps);
 
-		/*for (int i = 0; i < 800; i++)
-		{
-			for (int j = 0; j < 600; j++)
-			{
-				SetPixel(screenHDC, i, j, RGB(255, 255, 0));
-			}
-		}*/
 		ApcDevice::DrawLine(0, 0, 1000, 1000);
 		ApcDevice::DrawLine(0, 0, 500, 1000);
 		ApcDevice::DrawLine(0, 0, 1000, 500);
@@ -83,6 +76,9 @@ LRESULT WindowsAPI::OnEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		ApcDevice::DrawLine(1000, 500, 0, 0);
 
 		ApcDevice::DrawTrangle(0, 0, 0, 300, 400, 300);
+		ApcDevice::DrawTrangle(0, 0, 200, 0, 300, 500);
+		//ApcDevice::DrawTrangle(300, 0, 400, 400, 500, 500);
+		ApcDevice::DrawTrangle(300, 0, 800, 600, 500, 500);
 		BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 		EndPaint(hwnd, &ps);
 		break;
