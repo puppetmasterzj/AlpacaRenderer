@@ -24,6 +24,9 @@
     <ClCompile Include="ApcDevice.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApcMath.h">
@@ -33,6 +36,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ApcDevice.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

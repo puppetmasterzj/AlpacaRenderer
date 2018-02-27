@@ -115,11 +115,13 @@
   <ItemGroup>
     <ClCompile Include="ApcDevice.cpp" />
     <ClCompile Include="ApcMain.cpp" />
+    <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="WindowsAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApcDevice.h" />
     <ClInclude Include="ApcMath.h" />
+    <ClInclude Include="Vector3.h" />
     <ClInclude Include="WindowsAPI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
