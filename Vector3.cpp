@@ -26,6 +26,9 @@ Vector3 Vector3::operator*(float value)const
 	return returnValue;
 }
 
+Vector3 Vector3::operator/(float value)const
+{
+	Vector3 returnValue(x / value, y / value, z / value);
 	return returnValue;
 }
 
