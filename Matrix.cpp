@@ -72,6 +72,17 @@ Matrix Matrix::operator * (float k) const
 	return m;
 }
 
+Vector3 Matrix::MultiplyVector3(const Vector3& v) const
+{
+	float x = v.x * value[0][0] + v.y * value[1][0] + v.z * value[2][0] + v.w * value[3][0];
+	float y = v.x * value[0][1] + v.y * value[1][1] + v.z * value[2][1] + v.w * value[3][1];
+	float z = v.x * value[0][2] + v.y * value[1][2] + v.z * value[2][2] + v.w * value[3][2];
+	float w = v.x * value[0][3] + v.y * value[1][3] + v.z * value[2][3] + v.w * value[3][3];
+	Vector3 returnValue(x, y, z);
+	returnValue.w = w;
+	return returnValue;
+}
+
 void Matrix::Print()
 {
 	std::cout << "-----------------Matrix Begin--------------" << std::endl;

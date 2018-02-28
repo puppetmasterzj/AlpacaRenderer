@@ -3,7 +3,7 @@
 class Vector3
 {
 public:
-	float x, y, z;
+	float x, y, z, w;
 
 	Vector3(float fx, float fy, float fz);
 

@@ -40,3 +40,9 @@
 *.log
 *.pdb
 *.pdb
+*.ilk
+*.log
+*.pdb
+*.tlog
+*.idb
+*.pdb

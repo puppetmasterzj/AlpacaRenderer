@@ -1,6 +1,9 @@
-﻿  Matrix.cpp
+﻿  WindowsAPI.cpp
+  Vector3.cpp
+  Matrix.cpp
   正在生成代码...
-  正在跳过...(未检测到相关更改)
-  WindowsAPI.cpp
+  LINK : 没有找到 E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe 或上一个增量链接没有生成它；正在执行完全链接
+ApcMain.obj : warning LNK4204: “E:\Project\AlpacaRenderer\Debug\vc140.pdb”缺少引用模块的调试信息；正在链接对象，如同没有调试信息一样
+ApcDevice.obj : warning LNK4204: “E:\Project\AlpacaRenderer\Debug\vc140.pdb”缺少引用模块的调试信息；正在链接对象，如同没有调试信息一样
   AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
   AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)
