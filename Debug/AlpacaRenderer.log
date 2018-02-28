@@ -1,3 +1,9 @@
 ﻿  WindowsAPI.cpp
-  AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
-  AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)
+  Vector3.cpp
+  ApcDevice.cpp
+  Generating Code...
+  Compiling...
+  ApcMain.cpp
+  Generating Code...
+  AlpacaRenderer.vcxproj -> D:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
+  AlpacaRenderer.vcxproj -> D:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)
