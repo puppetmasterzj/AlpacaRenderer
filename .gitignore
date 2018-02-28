@@ -33,3 +33,10 @@
 *.exe
 *.out
 *.app
+*.db
+*.log
+*.opendb
+*.ilk
+*.log
+*.pdb
+*.pdb
