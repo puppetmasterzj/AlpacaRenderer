@@ -1,8 +1,6 @@
 //羊驼渲染器主要实现 Device
 #pragma once
-#include "ApcMath.h"
-#include "WindowsAPI.h"
-
+#include "Stdfx.h"
 
 class ApcDevice
 {

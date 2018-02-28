@@ -1,5 +1,4 @@
 //ÑòÍÕäÖÈ¾Æ÷Mainº¯Êı
-#include "ApcMath.h"
 #include "WindowsAPI.h"
 
 int main()

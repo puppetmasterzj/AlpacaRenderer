@@ -1,6 +1,7 @@
 #include "WindowsAPI.h"
+#include "Vector3.h"
+#include "Matrix.h"
 #include "ApcDevice.h"
-
 
 WindowsAPI::WindowsAPI()
 {
@@ -79,6 +80,18 @@ LRESULT WindowsAPI::OnEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		ApcDevice::DrawTrangle(0, 0, 200, 0, 300, 500);
 		//ApcDevice::DrawTrangle(300, 0, 400, 400, 500, 500);
 		ApcDevice::DrawTrangle(300, 0, 800, 600, 500, 500);
+		Vector3 v1(1, 2, 3);
+		Vector3 v2(4, 5, 6);
+		(v1 + v2).Print();
+		(v1 - v2).Print();
+		(v1 * 3).Print();
+		(v1 / 3).Print();
+		std::cout << v1.Magnitude() << std::endl;
+		std::cout << Vector3::Dot(v1, v2) << std::endl;
+		Vector3::Cross(v1, v2).Print();
+
+		Matrix m;
+		m.Print();
 		BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 		EndPaint(hwnd, &ps);
 		break;

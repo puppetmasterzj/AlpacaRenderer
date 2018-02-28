@@ -1,6 +1,3 @@
 #pragma once
 #include <math.h>
-class Matrix
-{
-
-};
+#include <iostream>

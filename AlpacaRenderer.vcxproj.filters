@@ -27,11 +27,11 @@
     <ClCompile Include="Vector3.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ApcMath.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="WindowsAPI.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -39,6 +39,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Vector3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Stdfx.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

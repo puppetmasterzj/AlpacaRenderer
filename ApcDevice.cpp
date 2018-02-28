@@ -1,7 +1,5 @@
 #include "ApcDevice.h"
-#include <iostream>
-
-
+#include "WindowsAPI.h"
 
 ApcDevice::ApcDevice()
 {

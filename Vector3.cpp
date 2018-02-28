@@ -1,5 +1,4 @@
 #include "Vector3.h"
-#include "ApcMath.h"
 
 Vector3::Vector3(float fx, float fy, float fz)
 {
@@ -64,6 +63,11 @@ Vector3 Vector3::Cross(const Vector3& left, const Vector3& right)
 Vector3 Vector3::Lerp(const Vector3& left, const Vector3& right, float t)
 {
 	return left * t + right * (1.0f - t);
+}
+
+void Vector3::Print()
+{
+	std::cout << "Vector3 x: " << x << " y: " << y << " z: " << z << std::endl;
 }
 
 
