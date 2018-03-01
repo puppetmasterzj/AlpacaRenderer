@@ -91,7 +91,19 @@ LRESULT WindowsAPI::OnEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		Vector3::Cross(v1, v2).Print();
 
 		Matrix m;
+		m.Identity();
 		m.Print();
+		m.value[0][3] = 8;
+		m.Print();
+		m.Transpose();
+		m.Print();
+
+		Vector3 v3(1, 1, 0);
+		Matrix mt = Matrix::GenTranslateMatrix(Vector3(1, 0, 0));
+		Matrix ms = Matrix::GenScaleMatrix(Vector3(.5f, .5f, .5f));
+		Matrix resultM = mt * ms;
+		v3 = resultM.MultiplyVector3(v3);
+		v3.Print();
 		BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 		EndPaint(hwnd, &ps);
 		break;

@@ -5,6 +5,7 @@ Vector3::Vector3(float fx, float fy, float fz)
 	x = fx;
 	y = fy;
 	z = fz;
+	w = 1;
 }
 
 Vector3 Vector3::operator+(const Vector3& right)const

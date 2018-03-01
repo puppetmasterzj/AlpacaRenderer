@@ -83,6 +83,56 @@ Vector3 Matrix::MultiplyVector3(const Vector3& v) const
 	return returnValue;
 }
 
+void Matrix::Identity()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (i == j)
+				value[i][j] = 1;
+			else
+				value[i][j] = 0;
+		}
+	}
+}
+
+void Matrix::Transpose()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			std::swap(value[i][j], value[j][i]);
+		}
+	}
+}
+
+Matrix Matrix::GenTranslateMatrix(const Vector3& v)
+{
+	Matrix m;
+	m.Identity();
+	m.value[3][0] = v.x;
+	m.value[3][1] = v.y;
+	m.value[3][2] = v.z;
+	return m;
+}
+
+Matrix Matrix::GenRotationMatrix(const Vector3& anxi, float angle)
+{
+	Matrix m;
+	return m;
+}
+
+Matrix Matrix::GenScaleMatrix(const Vector3& v)
+{
+	Matrix m;
+	m.value[0][0] = v.x;
+	m.value[1][1] = v.y;
+	m.value[2][2] = v.z;
+	return m;
+}
+
 void Matrix::Print()
 {
 	std::cout << "-----------------Matrix Begin--------------" << std::endl;
