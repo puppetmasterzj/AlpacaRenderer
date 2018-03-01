@@ -118,7 +118,7 @@ Matrix Matrix::GenTranslateMatrix(const Vector3& v)
 	return m;
 }
 
-Matrix Matrix::GenRotationMatrix(const Vector3& anxi, float angle)
+Matrix Matrix::GenRotationMatrix(const Vector3& rotAxis, float angle)
 {
 	Matrix m;
 	return m;
@@ -130,6 +130,34 @@ Matrix Matrix::GenScaleMatrix(const Vector3& v)
 	m.value[0][0] = v.x;
 	m.value[1][1] = v.y;
 	m.value[2][2] = v.z;
+	return m;
+}
+
+
+//相机矩阵推导:http://blog.csdn.net/popy007/article/details/5120158
+//DX版本实现：http://www.cnblogs.com/mikewolf2002/archive/2012/03/11/2390669.html
+Matrix Matrix::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos, const Vector3& upAxis)
+{
+	Vector3 lookDir = lookPos - eyePos;
+	lookDir.Normalize();
+
+	Vector3 rightDir = Vector3::Cross(upAxis, lookDir);
+	rightDir.Normalize();
+
+	Vector3 upDir = Vector3::Cross(lookDir, rightDir);
+	upDir.Normalize();//?
+
+	//构建一个坐标系，将vector转化到该坐标系，相当于对坐标系进行逆变换
+	//C = RT,C^-1 = (RT)^-1 = (T^-1) * (R^-1),Translate矩阵逆矩阵直接对x,y,z取反即可；R矩阵为正交矩阵，故T^-1 = Transpose(T)
+	//最终Camera矩阵为(T^-1) * Transpose(T)，此处可以直接给出矩阵乘法后的结果，减少运行时计算
+	float transX = -Vector3::Dot(rightDir, eyePos);
+	float transY = -Vector3::Dot(upDir, eyePos);
+	float transZ = -Vector3::Dot(lookDir, eyePos);
+	Matrix m;
+	m.value[0][0] = rightDir.x;  m.value[0][1] = upDir.x;  m.value[0][2] = lookDir.x;  m.value[0][3] = 0;
+	m.value[1][0] = rightDir.y;	 m.value[1][1] = upDir.y;  m.value[1][2] = lookDir.y;  m.value[1][3] = 0;
+	m.value[2][0] = rightDir.z;  m.value[2][1] = upDir.z;  m.value[2][2] = lookDir.z;  m.value[2][3] = 0;
+	m.value[3][0] = transX;		 m.value[3][1] = transY;   m.value[3][2] = transZ;	   m.value[3][3] = 1;
 	return m;
 }
 

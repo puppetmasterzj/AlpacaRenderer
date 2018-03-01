@@ -20,8 +20,9 @@ public:
 	void Transpose();
 
 	static Matrix GenTranslateMatrix(const Vector3& v);
-	static Matrix GenRotationMatrix(const Vector3& anxi, float angle);
+	static Matrix GenRotationMatrix(const Vector3& rotAxis, float angle);
 	static Matrix GenScaleMatrix(const Vector3& v);
+	static Matrix GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos, const Vector3& upAxis);
 
 	void Print();
 
