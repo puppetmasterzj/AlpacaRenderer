@@ -161,6 +161,23 @@ Matrix Matrix::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos, co
 	return m;
 }
 
+//透视投影矩阵推导:http://blog.csdn.net/popy007/article/details/1797121#comments
+Matrix Matrix::GenProjectionMatrix(float fov, float aspect, float near, float far)
+{
+	float top = tan(0.5f * fov) * near;
+	float bottom = -top;
+	float right = top * aspect;
+	float left = -right;
+
+	Matrix proj;
+	proj.value[0][0] = 2 * near / (right - left);
+	proj.value[1][1] = 2 * near / (top - bottom);
+	proj.value[2][2] = far / (far - near);
+	proj.value[3][2] = -near * far / (far - near);
+	proj.value[2][3] = 1;
+	return proj;
+}
+
 void Matrix::Print()
 {
 	std::cout << "-----------------Matrix Begin--------------" << std::endl;
