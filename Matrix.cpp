@@ -127,6 +127,7 @@ Matrix Matrix::GenRotationMatrix(const Vector3& rotAxis, float angle)
 Matrix Matrix::GenScaleMatrix(const Vector3& v)
 {
 	Matrix m;
+	m.Identity();
 	m.value[0][0] = v.x;
 	m.value[1][1] = v.y;
 	m.value[2][2] = v.z;
@@ -145,7 +146,7 @@ Matrix Matrix::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos, co
 	rightDir.Normalize();
 
 	Vector3 upDir = Vector3::Cross(lookDir, rightDir);
-	upDir.Normalize();//?
+	//upDir.Normalize();//?
 
 	//构建一个坐标系，将vector转化到该坐标系，相当于对坐标系进行逆变换
 	//C = RT,C^-1 = (RT)^-1 = (T^-1) * (R^-1),Translate矩阵逆矩阵直接对x,y,z取反即可；R矩阵为正交矩阵，故T^-1 = Transpose(T)

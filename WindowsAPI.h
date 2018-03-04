@@ -8,9 +8,8 @@
 class WindowsAPI
 {
 private:
-	const char* windowTitle = "—ÚÕ’‰÷»æ∆˜";
-	static const int windowWidth = 800;
-	static const int windowHeight = 600;
+	
+	
 	static HDC hdc;
 	static HDC screenHDC;
 public:
@@ -22,5 +21,7 @@ public:
 	static LRESULT OnEvent(HWND, UINT, WPARAM, LPARAM);
 
 	static void DrawPixel(int x, int y);
-
+	static const int windowWidth = 800;
+	static const int windowHeight = 600;
+	const char* windowTitle = "—ÚÕ’‰÷»æ∆˜";
 };

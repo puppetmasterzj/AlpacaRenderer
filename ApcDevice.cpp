@@ -1,5 +1,6 @@
 #include "ApcDevice.h"
 #include "WindowsAPI.h"
+#include "Matrix.h"
 
 ApcDevice::ApcDevice()
 {
@@ -150,4 +151,34 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 		int xr = (y - y1) * (x2 - x1) / (y2 - y1) + x1;
 		DrawLine(xl, y, xr, y);
 	}
+}
+
+void ApcDevice::DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3)
+{
+	Matrix scaleM = Matrix::GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
+	Matrix transM = Matrix::GenTranslateMatrix(Vector3(0.5f, 0.5f, 0.0f));
+	Matrix worldM = scaleM * transM;
+	Matrix cameraM = Matrix::GenCameraMatrix(Vector3(0, 0, -1.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
+	Matrix projM = Matrix::GenProjectionMatrix(60.0f, 1.0f, 0.5f, 30.0f);
+
+	Matrix transformM = worldM * cameraM * projM;
+
+	Vector3 vt1 = transformM.MultiplyVector3(v1);
+	Vector3 vt2 = transformM.MultiplyVector3(v2);
+	Vector3 vt3 = transformM.MultiplyVector3(v3);
+
+	Vector3 vs1 = GetScreenCoord(vt1);
+	Vector3 vs2 = GetScreenCoord(vt2);
+	Vector3 vs3 = GetScreenCoord(vt3);
+
+	DrawTrangle(vs1.x, vs1.y, vs2.x, vs2.y, vs3.x, vs3.y);
+}
+
+//齐次坐标转化，除以w，然后从-1,1区间转化到0，1区间，+ 1然后/2
+Vector3 ApcDevice::GetScreenCoord(const Vector3& v)
+{
+	float x = (v.x / v.w + 1) * 0.5f * WindowsAPI::windowWidth;
+	float y = (1.0f - v.y / v.w) * 0.5f * WindowsAPI::windowHeight;
+	float z = v.z / v.w;
+	return Vector3(x, y, z);
 }

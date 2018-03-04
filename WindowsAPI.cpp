@@ -70,17 +70,17 @@ LRESULT WindowsAPI::OnEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		hdc = BeginPaint(hwnd, &ps);
 
-		ApcDevice::DrawLine(0, 0, 1000, 1000);
-		ApcDevice::DrawLine(0, 0, 500, 1000);
-		ApcDevice::DrawLine(0, 0, 1000, 500);
-		ApcDevice::DrawLine(500, 1000, 0, 0);
-		ApcDevice::DrawLine(1000, 500, 0, 0);
+		//ApcDevice::DrawLine(0, 0, 1000, 1000);
+		//ApcDevice::DrawLine(0, 0, 500, 1000);
+		//ApcDevice::DrawLine(0, 0, 1000, 500);
+		//ApcDevice::DrawLine(500, 1000, 0, 0);
+		//ApcDevice::DrawLine(1000, 500, 0, 0);
 
-		ApcDevice::DrawTrangle(0, 0, 0, 300, 400, 300);
-		ApcDevice::DrawTrangle(0, 0, 200, 0, 300, 500);
-		//ApcDevice::DrawTrangle(300, 0, 400, 400, 500, 500);
-		ApcDevice::DrawTrangle(300, 0, 800, 600, 500, 500);
-		Vector3 v1(1, 2, 3);
+		//ApcDevice::DrawTrangle(0, 0, 0, 300, 400, 300);
+		//ApcDevice::DrawTrangle(0, 0, 200, 0, 300, 500);
+		////ApcDevice::DrawTrangle(300, 0, 400, 400, 500, 500);
+		//ApcDevice::DrawTrangle(300, 0, 800, 600, 500, 500);
+		/*Vector3 v1(1, 2, 3);
 		Vector3 v2(4, 5, 6);
 		(v1 + v2).Print();
 		(v1 - v2).Print();
@@ -103,7 +103,12 @@ LRESULT WindowsAPI::OnEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		Matrix ms = Matrix::GenScaleMatrix(Vector3(.5f, .5f, .5f));
 		Matrix resultM = mt * ms;
 		v3 = resultM.MultiplyVector3(v3);
-		v3.Print();
+		v3.Print();*/
+
+		Vector3 v1(0, 0, 1);
+		Vector3 v2(0, 3, 1);
+		Vector3 v3(4, 0, 1);
+		ApcDevice::DrawTrangle3D(v1, v2, v3);
 		BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 		EndPaint(hwnd, &ps);
 		break;

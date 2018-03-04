@@ -1,6 +1,4 @@
-﻿  Matrix.cpp
-  正在生成代码...
-  正在跳过...(未检测到相关更改)
-  WindowsAPI.cpp
+﻿  ApcDevice.cpp
+e:\project\alpacarenderer\apcdevice.cpp(174): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
   AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)
