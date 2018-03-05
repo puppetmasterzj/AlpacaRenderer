@@ -115,12 +115,14 @@
   <ItemGroup>
     <ClCompile Include="ApcDevice.cpp" />
     <ClCompile Include="ApcMain.cpp" />
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="WindowsAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApcDevice.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Stdfx.h" />
     <ClInclude Include="Vector3.h" />
