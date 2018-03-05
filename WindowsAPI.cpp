@@ -1,6 +1,4 @@
 #include "WindowsAPI.h"
-#include "Vector3.h"
-#include "Matrix.h"
 #include "ApcDevice.h"
 
 WindowsAPI::WindowsAPI()

@@ -1,4 +1,9 @@
-﻿  ApcDevice.cpp
-e:\project\alpacarenderer\apcdevice.cpp(174): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-  AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
-  AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)
+﻿  WindowsAPI.cpp
+  Vector3.cpp
+  Matrix.cpp
+  ApcMain.cpp
+  ApcDevice.cpp
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(174): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
+  AlpacaRenderer.vcxproj -> D:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
+  AlpacaRenderer.vcxproj -> D:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)
