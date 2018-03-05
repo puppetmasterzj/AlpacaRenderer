@@ -1,8 +1,8 @@
 //羊驼渲染器主要实现 Device
 #pragma once
 #include "Stdfx.h"
-#include "Vector3.h"
 #include "Matrix.h"
+#include "Vertex.h"
 
 class ApcDevice
 {
