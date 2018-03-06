@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "Color.h"
 
 class WindowsAPI
 {
@@ -21,6 +22,7 @@ public:
 	static LRESULT OnEvent(HWND, UINT, WPARAM, LPARAM);
 
 	static void DrawPixel(int x, int y);
+	static void DrawPixel(int x, int y, const Color& color);
 	static const int windowWidth = 800;
 	static const int windowHeight = 600;
 	const char* windowTitle = "—ÚÕ’‰÷»æ∆˜";

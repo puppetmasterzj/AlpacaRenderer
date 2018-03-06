@@ -1,5 +1,14 @@
-﻿  Vertex.cpp
-e:\project\alpacarenderer\vertex.cpp(6): error C2512: “Vector3”: 没有合适的默认构造函数可用
-  e:\project\alpacarenderer\vector3.h(4): note: 参见“Vector3”的声明
-e:\project\alpacarenderer\vertex.cpp(6): error C2512: “Color”: 没有合适的默认构造函数可用
-  e:\project\alpacarenderer\color.h(3): note: 参见“Color”的声明
+﻿  ApcDevice.cpp
+e:\project\alpacarenderer\apcdevice.cpp(186): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(187): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(188): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(248): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(253): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(257): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(271): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(272): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(291): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(292): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(331): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
+  AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)

@@ -10,5 +10,7 @@ public:
 
 	Vertex(const Vector3& p, const Color& c);
 	~Vertex();
+
+	void LerpVertexData(Vertex& left, const Vertex& right, float t);
 };
 

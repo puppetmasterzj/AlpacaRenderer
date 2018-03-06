@@ -103,16 +103,27 @@ LRESULT WindowsAPI::OnEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		v3 = resultM.MultiplyVector3(v3);
 		v3.Print();*/
 
-		Vector3 v1(0, 0, 1);
-		Vector3 v2(0, 3, 1);
-		Vector3 v3(4, 0, 1);
-		ApcDevice::DrawTrangle3D(v1, v2, v3);
+		Vector3 v1(0, 0, 1); Color c1(1.0f, 0, 0, 1.0f);
+		Vector3 v2(0, 3, 1); Color c2(0, 1.0f, 0, 1.0f);
+		Vector3 v3(4, 0, 1); Color c3(0, 0, 1.0f, 1.0f);
+		//ApcDevice::DrawTrangle3D(v1, v2, v3);
+		Vertex p1(v1, c1);
+		Vertex p2(v2, c2);
+		Vertex p3(v3, c3);
+		ApcDevice::DrawPrimitive(p1, p2, p3);
+
+
 		BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 		EndPaint(hwnd, &ps);
 		break;
 	}
 	}
 	return DefWindowProc(hwnd, msg, wParam, lParam);
+}
+
+void WindowsAPI::DrawPixel(int x, int y, const Color& color)
+{
+	SetPixel(screenHDC, x, y, RGB(255 * color.r, 255 * color.g, 255 * color.b));
 }
 
 void WindowsAPI::DrawPixel(int x, int y)

@@ -153,6 +153,163 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 	}
 }
 
+void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
+{
+	Matrix scaleM = ApcDevice::GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
+	Matrix transM = ApcDevice::GenTranslateMatrix(Vector3(0.5f, 0.5f, 0.0f));
+	Matrix worldM = scaleM * transM;
+	Matrix cameraM = ApcDevice::GenCameraMatrix(Vector3(0, 0, -1.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
+	Matrix projM = ApcDevice::GenProjectionMatrix(60.0f, 1.0f, 0.5f, 30.0f);
+
+	Matrix transformM = worldM * cameraM * projM;
+	Vector3 vt1 = transformM.MultiplyVector3(v1.pos);
+	Vector3 vt2 = transformM.MultiplyVector3(v2.pos);
+	Vector3 vt3 = transformM.MultiplyVector3(v3.pos);
+
+	v1.pos = GetScreenCoord(vt1);
+	v2.pos = GetScreenCoord(vt2);
+	v3.pos = GetScreenCoord(vt3);
+
+	DrawTrangle2D(v1, v2, v3);
+}
+
+void ApcDevice::DrawTrangle2D(Vertex v0, Vertex v1, Vertex v2)
+{
+	//按照y进行排序，使y0 < y1 < y2
+	if (v1.pos.y < v0.pos.y)
+		std::swap(v0, v1);
+	if (v2.pos.y < v0.pos.y)
+		std::swap(v0, v2);
+	if (v2.pos.y < v1.pos.y)
+		std::swap(v1, v2);
+
+	int ty0 = v0.pos.y;
+	int ty1 = v1.pos.y;
+	int ty2 = v2.pos.y;
+	if (ty0 == ty1)	//平顶三角形
+	{
+		DrawTopFlatTrangle(v0, v1, v2);
+	}
+	else if (ty1 == ty2) //平底三角形
+	{
+		DrawBottomFlatTrangle(v0, v1, v2);
+	}
+	else			//拆分为一个平顶三角形和一个平底三角形
+	{
+		//中心点为直线(x0, y0)，(x2, y2)上取y1的点
+		float x3 = (v1.pos.y - v0.pos.y) * (v2.pos.x - v0.pos.x) / (v2.pos.y - v0.pos.y) + v0.pos.x;
+		float y3 = v1.pos.y;
+		float t = (y3 - v0.pos.y) / (v2.pos.y - ty0);
+
+		Vertex v3(Vector3(x3, y3, 0), Color(0, 0, 0, 0));
+		v3.LerpVertexData(v0, v2, t);
+
+		//进行x排序，此处约定x2较小
+		if (v1.pos.x > x3)
+			std::swap(v1, v3);
+
+		DrawBottomFlatTrangle(v0, v1,v3);
+		DrawTopFlatTrangle(v1, v3, v2);
+	}
+}
+
+void ApcDevice::DrawTopFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
+{
+	float x0 = v0.pos.x;
+	float y0 = v0.pos.y;
+	float x1 = v1.pos.x;
+	float y1 = v1.pos.y;
+	float x2 = v2.pos.x;
+	float y2 = v2.pos.y;
+	for (float y = y0; y <= y2; y++)
+	{
+		float t = (y - y0) / (y2 - y0);
+
+		float xl = (y - y0) * (x2 - x0) / (y2 - y0) + x0;
+		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0));
+		vl.LerpVertexData(v0, v2, t);
+
+		float xr = (y - y1) * (x2 - x1) / (y2 - y1) + x1;
+		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0));
+		vr.LerpVertexData(v1, v2, t);
+
+		DrawLine(vl, vr);
+	}
+}
+
+void ApcDevice::DrawBottomFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
+{
+	float x0 = v0.pos.x;
+	float y0 = v0.pos.y;
+	float x1 = v1.pos.x;
+	float y1 = v1.pos.y;
+	float x2 = v2.pos.x;
+	float y2 = v2.pos.y;
+	for (int y = y0; y <= y1; y++)
+	{
+		float t = (y - y0) / (y2 - y0);
+
+		float xl = (y - y1) * (x0 - x1) / (y0 - y1) + x1;
+		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0));
+		v1.LerpVertexData(v0, v1, t);
+
+		float xr = (y - y2) * (x0 - x2) / (y0 - y2) + x2;
+		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0));
+		vr.LerpVertexData(v0, v2, t);
+
+		DrawLine(vl, vr);
+	}
+}
+
+void ApcDevice::DrawLine(Vertex v0, Vertex v1)
+{
+	float x0 = v0.pos.x;
+	float x1 = v1.pos.x;
+	float y0 = v0.pos.y;
+	float y1 = v1.pos.y;
+	//只考虑x方向扫描线即可
+	int dx = x1 - x0;
+	int dy = y1 - y0;
+
+	int stepx = 1;
+	int stepy = 1;
+
+	if (dx < 0)
+	{
+		stepx = -1;
+		dx = -dx;
+	}
+
+	if (dy < 0)
+	{
+		stepy = -1;
+		dy = -dy;
+	}
+	int dy2 = dy << 1;
+	int dx2 = dx << 1;
+
+	int x = x0;
+	int y = y0;
+	int errorValue;
+
+	errorValue = dy2 - dx;
+	for (int i = 0; i <= dx; i++)
+	{
+		float t = (x - x0) / (x1 - x0);
+		Color c(0,0,0,1);
+		c = Color::Lerp(v0.color, v1.color, t);
+		WindowsAPI::DrawPixel(x, y, c);
+		x += stepx;
+
+		errorValue += dy2;
+		if (errorValue >= 0)
+		{
+			errorValue -= dx2;
+			y += stepy;
+		}
+	}
+}
+
 void ApcDevice::DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3)
 {
 	Matrix scaleM = ApcDevice::GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
