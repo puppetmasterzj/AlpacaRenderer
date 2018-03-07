@@ -1,15 +1,15 @@
 ﻿  ApcDevice.cpp
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(186): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(187): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(188): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(248): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(253): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(257): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(271): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(189): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(249): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(254): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(258): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(272): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(291): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(273): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(292): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(331): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(293): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(332): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating Code...
   Skipping... (no relevant changes detected)
   Vector3.cpp

@@ -155,10 +155,11 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 {
-	Matrix scaleM = ApcDevice::GenScaleMatrix(Vector3(2.0f, 2.0f, 2.0f));
+	Matrix scaleM = ApcDevice::GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
+	Matrix rotM = ApcDevice::GenRotationMatrix(Vector3(60.0f, 6.0f, 60.0f));
 	Matrix transM = ApcDevice::GenTranslateMatrix(Vector3(0, 0, 0));
-	Matrix worldM = scaleM * transM;
-	Matrix cameraM = ApcDevice::GenCameraMatrix(Vector3(0, 0, -3.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
+	Matrix worldM = scaleM * rotM * transM;
+	Matrix cameraM = ApcDevice::GenCameraMatrix(Vector3(0, 0, -10.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
 	Matrix projM = ApcDevice::GenProjectionMatrix(60.0f, 1.0f, 0.01f, 300.0f);
 
 	Matrix transformM = worldM * cameraM * projM;
@@ -341,12 +342,6 @@ Matrix ApcDevice::GenTranslateMatrix(const Vector3& v)
 	return m;
 }
 
-Matrix ApcDevice::GenRotationMatrix(const Vector3& rotAxis, float angle)
-{
-	Matrix m;
-	return m;
-}
-
 Matrix ApcDevice::GenScaleMatrix(const Vector3& v)
 {
 	Matrix m;
@@ -354,6 +349,54 @@ Matrix ApcDevice::GenScaleMatrix(const Vector3& v)
 	m.value[0][0] = v.x;
 	m.value[1][1] = v.y;
 	m.value[2][2] = v.z;
+	return m;
+}
+
+//Ðý×ª¾ØÕóÍÆµ¼:https://www.cnblogs.com/wonderKK/p/5275003.html
+Matrix ApcDevice::GenRotationMatrix(const Vector3& rotAngle)
+{
+	Matrix rotX = GenRotationXMatrix(rotAngle.x);
+	Matrix rotY = GenRotationYMatrix(rotAngle.y);
+	Matrix rotZ = GenRotationZMatrix(rotAngle.z);
+	return rotX * rotY * rotZ;
+}
+
+Matrix ApcDevice::GenRotationXMatrix(float angle)
+{
+	Matrix m;
+	m.Identity();
+	float cosValue = cos(angle);
+	float sinValue = sin(angle);
+	m.value[1][1] = cosValue;
+	m.value[1][2] = sinValue;
+	m.value[2][1] = -sinValue;
+	m.value[2][2] = cosValue;
+	return m;
+}
+
+Matrix ApcDevice::GenRotationYMatrix(float angle)
+{
+	Matrix m;
+	m.Identity();
+	float cosValue = cos(angle);
+	float sinValue = sin(angle);
+	m.value[0][0] = cosValue;
+	m.value[0][2] = -sinValue;
+	m.value[2][0] = sinValue;
+	m.value[2][2] = cosValue;
+	return m;
+}
+
+Matrix ApcDevice::GenRotationZMatrix(float angle)
+{
+	Matrix m;
+	m.Identity();
+	float cosValue = cos(angle);
+	float sinValue = sin(angle);
+	m.value[0][0] = cosValue;
+	m.value[0][1] = sinValue;
+	m.value[1][0] = -sinValue;
+	m.value[1][1] = cosValue;
 	return m;
 }
 
