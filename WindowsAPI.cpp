@@ -103,8 +103,8 @@ LRESULT WindowsAPI::OnEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		v3 = resultM.MultiplyVector3(v3);
 		v3.Print();*/
 
-		Vector3 v1(0, 0, 1); Color c1(1.0f, 0, 0, 1.0f);
-		Vector3 v2(0, 3, 1); Color c2(0, 1.0f, 0, 1.0f);
+		Vector3 v1(0, 5, 1); Color c1(1.0f, 0, 0, 1.0f);
+		Vector3 v2(4, 3, 1); Color c2(0, 1.0f, 0, 1.0f);
 		Vector3 v3(4, 0, 1); Color c3(0, 0, 1.0f, 1.0f);
 		//ApcDevice::DrawTrangle3D(v1, v2, v3);
 		Vertex p1(v1, c1);

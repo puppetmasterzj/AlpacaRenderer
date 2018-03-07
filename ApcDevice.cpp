@@ -155,11 +155,11 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 {
-	Matrix scaleM = ApcDevice::GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	Matrix transM = ApcDevice::GenTranslateMatrix(Vector3(0.5f, 0.5f, 0.0f));
+	Matrix scaleM = ApcDevice::GenScaleMatrix(Vector3(2.0f, 2.0f, 2.0f));
+	Matrix transM = ApcDevice::GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * transM;
-	Matrix cameraM = ApcDevice::GenCameraMatrix(Vector3(0, 0, -1.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
-	Matrix projM = ApcDevice::GenProjectionMatrix(60.0f, 1.0f, 0.5f, 30.0f);
+	Matrix cameraM = ApcDevice::GenCameraMatrix(Vector3(0, 0, -3.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
+	Matrix projM = ApcDevice::GenProjectionMatrix(60.0f, 1.0f, 0.01f, 300.0f);
 
 	Matrix transformM = worldM * cameraM * projM;
 	Vector3 vt1 = transformM.MultiplyVector3(v1.pos);
@@ -227,11 +227,11 @@ void ApcDevice::DrawTopFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 
 		float xl = (y - y0) * (x2 - x0) / (y2 - y0) + x0;
 		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0));
-		vl.LerpVertexData(v0, v2, t);
+		vl.LerpVertexData(v2, v0, t);
 
 		float xr = (y - y1) * (x2 - x1) / (y2 - y1) + x1;
 		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0));
-		vr.LerpVertexData(v1, v2, t);
+		vr.LerpVertexData(v2, v1, t);
 
 		DrawLine(vl, vr);
 	}
@@ -251,11 +251,11 @@ void ApcDevice::DrawBottomFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 
 		float xl = (y - y1) * (x0 - x1) / (y0 - y1) + x1;
 		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0));
-		v1.LerpVertexData(v0, v1, t);
+		vl.LerpVertexData(v1, v0, t);
 
 		float xr = (y - y2) * (x0 - x2) / (y0 - y2) + x2;
 		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0));
-		vr.LerpVertexData(v0, v2, t);
+		vr.LerpVertexData(v2, v0, t);
 
 		DrawLine(vl, vr);
 	}
