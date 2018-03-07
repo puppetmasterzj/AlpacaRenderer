@@ -119,7 +119,6 @@
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="WindowsAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApcDevice.h" />
@@ -128,7 +127,6 @@
     <ClInclude Include="Stdfx.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="WindowsAPI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

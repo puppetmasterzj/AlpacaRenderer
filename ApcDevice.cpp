@@ -1,5 +1,4 @@
 #include "ApcDevice.h"
-#include "WindowsAPI.h"
 #include "Matrix.h"
 
 ApcDevice::ApcDevice()
@@ -9,6 +8,13 @@ ApcDevice::ApcDevice()
 
 ApcDevice::~ApcDevice()
 {
+}
+
+void ApcDevice::InitDevice(HDC hdc, int screenWidth, int screenHeight)
+{
+	screenHDC = hdc;
+	deviceWidth = screenWidth;
+	deviceHeight = screenHeight;
 }
 
 void ApcDevice::DrawLine(int x0, int y0, int x1, int y1)
@@ -61,7 +67,7 @@ void ApcDevice::DrawLine(int x0, int y0, int x1, int y1)
 		errorValue = dy2 - dx;
 		for (int i = 0; i <= dx; i++)
 		{
-			WindowsAPI::DrawPixel(x, y);
+			DrawPixel(x, y);
 			x += stepx;
 			errorValue += dy2;
 			if (errorValue >= 0)
@@ -76,7 +82,7 @@ void ApcDevice::DrawLine(int x0, int y0, int x1, int y1)
 		errorValue = dx2 - dy;
 		for (int i = 0; i <= dy; i++)
 		{
-			WindowsAPI::DrawPixel(x, y);
+			DrawPixel(x, y);
 			y += stepy;
 			errorValue += dx2;
 			if (errorValue >= 0)
@@ -152,15 +158,15 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 		DrawLine(xl, y, xr, y);
 	}
 }
-
+int count = 0;
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 {
-	Matrix scaleM = ApcDevice::GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	Matrix rotM = ApcDevice::GenRotationMatrix(Vector3(60.0f, 6.0f, 60.0f));
-	Matrix transM = ApcDevice::GenTranslateMatrix(Vector3(0, 0, 0));
+	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
+	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.01f, 0));
+	Matrix transM = GenTranslateMatrix(Vector3(count * 0.01f, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;
-	Matrix cameraM = ApcDevice::GenCameraMatrix(Vector3(0, 0, -10.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
-	Matrix projM = ApcDevice::GenProjectionMatrix(60.0f, 1.0f, 0.01f, 300.0f);
+	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -10.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
+	Matrix projM = GenProjectionMatrix(60.0f, 1.0f, 0.01f, 300.0f);
 
 	Matrix transformM = worldM * cameraM * projM;
 	Vector3 vt1 = transformM.MultiplyVector3(v1.pos);
@@ -299,7 +305,7 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 		float t = (x - x0) / (x1 - x0);
 		Color c(0,0,0,1);
 		c = Color::Lerp(v0.color, v1.color, t);
-		WindowsAPI::DrawPixel(x, y, c);
+		DrawPixel(x, y, c);
 		x += stepx;
 
 		errorValue += dy2;
@@ -311,13 +317,28 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 	}
 }
 
+void ApcDevice::DrawPixel(int x, int y, const Color& color)
+{
+	SetPixel(screenHDC, x, y, RGB(255 * color.r, 255 * color.g, 255 * color.b));
+}
+
+void ApcDevice::DrawPixel(int x, int y)
+{
+	SetPixel(screenHDC, x, y, RGB(255, 255, 0));
+}
+
+void ApcDevice::Clear()
+{
+	BitBlt(screenHDC, 0, 0, deviceWidth, deviceHeight, NULL, NULL, NULL, BLACKNESS);
+}
+
 void ApcDevice::DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3)
 {
-	Matrix scaleM = ApcDevice::GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	Matrix transM = ApcDevice::GenTranslateMatrix(Vector3(0.5f, 0.5f, 0.0f));
+	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
+	Matrix transM = GenTranslateMatrix(Vector3(0.5f, 0.5f, 0.0f));
 	Matrix worldM = scaleM * transM;
-	Matrix cameraM = ApcDevice::GenCameraMatrix(Vector3(0, 0, -1.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
-	Matrix projM = ApcDevice::GenProjectionMatrix(60.0f, 1.0f, 0.5f, 30.0f);
+	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -1.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
+	Matrix projM = GenProjectionMatrix(60.0f, 1.0f, 0.5f, 30.0f);
 
 	Matrix transformM = worldM * cameraM * projM;
 
@@ -448,8 +469,8 @@ Matrix ApcDevice::GenProjectionMatrix(float fov, float aspect, float nearPanel, 
 //齐次坐标转化，除以w，然后从-1,1区间转化到0，1区间，+ 1然后/2
 Vector3 ApcDevice::GetScreenCoord(const Vector3& v)
 {
-	float x = (v.x / v.w + 1) * 0.5f * WindowsAPI::windowWidth;
-	float y = (1.0f - v.y / v.w) * 0.5f * WindowsAPI::windowHeight;
+	float x = (v.x / v.w + 1) * 0.5f * deviceWidth;
+	float y = (1.0f - v.y / v.w) * 0.5f * deviceHeight;
 	float z = v.z / v.w;
 	return Vector3(x, y, z);
 }

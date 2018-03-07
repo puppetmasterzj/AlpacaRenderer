@@ -1,18 +1,14 @@
 ﻿  ApcDevice.cpp
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(187): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(188): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(189): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(249): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(254): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(258): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(272): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(273): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(292): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(293): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(332): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  Vector3.cpp
-  Matrix.cpp
-  AlpacaRenderer.vcxproj -> D:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
-  AlpacaRenderer.vcxproj -> D:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)
+e:\project\alpacarenderer\apcdevice.cpp(193): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(194): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(195): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(255): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(260): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(264): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(278): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(279): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(298): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(299): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+e:\project\alpacarenderer\apcdevice.cpp(353): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
+  AlpacaRenderer.vcxproj -> E:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)
