@@ -161,12 +161,12 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 int count = 0;
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 {
-	Matrix scaleM = GenScaleMatrix(Vector3(10.0f, 10.0f, 1.0f));
-	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.0001f, 0));
+	Matrix scaleM = GenScaleMatrix(Vector3(0.5f, 0.5f, 0.5f));
+	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.01f, 0));
 	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;
-	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -1.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
-	Matrix projM = GenProjectionMatrix(60.0f, (float)deviceWidth / deviceHeight, 0.1f, 30.0f);
+	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -5), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	Matrix projM = GenProjectionMatrix(45.0f, (float)deviceWidth / deviceHeight, 0.1f, 30.0f);
 
 	Matrix transformM = worldM * cameraM * projM;
 	Vector3 vt1 = transformM.MultiplyVector3(v1.pos);
@@ -180,8 +180,11 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 	v1.pos = GetScreenCoord(vt1);
 	v2.pos = GetScreenCoord(vt2);
 	v3.pos = GetScreenCoord(vt3);
-
+	v1.pos.Print();
+	v2.pos.Print();
+	v3.pos.Print();
 	DrawTrangle2D(v1, v2, v3);
+	//DrawTrangle(v1.pos.x, v1.pos.y, v2.pos.x, v2.pos.y, v3.pos.x, v3.pos.y);
 }
 
 void ApcDevice::DrawTrangle2D(Vertex v0, Vertex v1, Vertex v2)
@@ -339,10 +342,10 @@ void ApcDevice::Clear()
 void ApcDevice::DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3)
 {
 	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	Matrix transM = GenTranslateMatrix(Vector3(0.5f, 0.5f, 0.0f));
+	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * transM;
-	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -1.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
-	Matrix projM = GenProjectionMatrix(60.0f, 1.0f, 0.5f, 30.0f);
+	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -10.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
+	Matrix projM = GenProjectionMatrix(0.5f, 1.0f, 0.5f, 3.0f);
 
 	Matrix transformM = worldM * cameraM * projM;
 
@@ -436,7 +439,7 @@ Matrix ApcDevice::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos,
 	rightDir.Normalize();
 
 	Vector3 upDir = Vector3::Cross(lookDir, rightDir);
-	//upDir.Normalize();//?
+	upDir.Normalize();//?
 
 	//构建一个坐标系，将vector转化到该坐标系，相当于对坐标系进行逆变换
 	//C = RT,C^-1 = (RT)^-1 = (T^-1) * (R^-1),Translate矩阵逆矩阵直接对x,y,z取反即可；R矩阵为正交矩阵，故T^-1 = Transpose(T)
@@ -455,12 +458,14 @@ Matrix ApcDevice::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos,
 //透视投影矩阵推导:http://blog.csdn.net/popy007/article/details/1797121#comments
 Matrix ApcDevice::GenProjectionMatrix(float fov, float aspect, float nearPanel, float farPanel)
 {
-	float top = -tan(0.5f * fov) * nearPanel;
+	float top = tan(0.5f * fov * 3.1415/ 180) * nearPanel;
 	float bottom = -top;
 	float right = top * aspect;
 	float left = -right;
 
 	Matrix proj;
+	/*proj.value[0][0] = (right - left);
+	proj.value[1][1] = (top - bottom);*/
 	proj.value[0][0] = 2 * nearPanel / (right - left);
 	proj.value[1][1] = 2 * nearPanel / (top - bottom);
 	proj.value[2][2] = farPanel / (farPanel - nearPanel);

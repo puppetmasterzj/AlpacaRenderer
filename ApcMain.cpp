@@ -91,9 +91,9 @@ void Update()
 
 void DoRender()
 {
-	Vector3 v1(-1, -1, 1); Color c1(1.0f, 0, 0, 1.0f);
-	Vector3 v2(1, 1, 1); Color c2(0, 1.0f, 0, 1.0f);
-	Vector3 v3(-1, 1, 1); Color c3(0, 0, 1.0f, 1.0f);
+	Vector3 v1(-1, -1,  0); Color c1(1.0f, 0, 0, 1.0f);
+	Vector3 v2( 1, -1,  0); Color c2(0, 1.0f, 0, 1.0f);
+	Vector3 v3( 0,  0,  0); Color c3(0, 0, 1.0f, 1.0f);
 	Vertex p1(v1, c1);
 	Vertex p2(v2, c2);
 	Vertex p3(v3, c3);

@@ -44,7 +44,7 @@ float Vector3::Magnitude()
 
 void Vector3::Normalize()
 {
-	*this / Magnitude();
+	*this = *this / Magnitude();
 }
 
 float Vector3::Dot(const Vector3& left, const Vector3& right)
