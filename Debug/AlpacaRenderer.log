@@ -1,4 +1,14 @@
-﻿  ApcMain.cpp
-d:\project\alpacarenderer\alpacarenderer\apcmain.cpp(70): warning C4060: switch statement contains no 'case' or 'default' labels
+﻿  ApcDevice.cpp
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(197): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(198): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(199): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(259): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(264): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(268): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(282): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(283): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(302): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(303): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\project\alpacarenderer\alpacarenderer\apcdevice.cpp(357): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   AlpacaRenderer.vcxproj -> D:\Project\AlpacaRenderer\Debug\AlpacaRenderer.exe
   AlpacaRenderer.vcxproj -> D:\Project\AlpacaRenderer\Debug\AlpacaRenderer.pdb (Partial PDB)

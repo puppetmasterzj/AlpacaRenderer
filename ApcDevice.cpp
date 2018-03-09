@@ -161,17 +161,21 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 int count = 0;
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 {
-	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.01f, 0));
+	Matrix scaleM = GenScaleMatrix(Vector3(10.0f, 10.0f, 1.0f));
+	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.0001f, 0));
 	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;
-	Matrix cameraM = GenCameraMatrix(Vector3(0, 1.0f, -10.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
-	Matrix projM = GenProjectionMatrix(60.0f, 1.0f, 0.1f, 30.0f);
+	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -1.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
+	Matrix projM = GenProjectionMatrix(60.0f, (float)deviceWidth / deviceHeight, 0.1f, 30.0f);
 
 	Matrix transformM = worldM * cameraM * projM;
 	Vector3 vt1 = transformM.MultiplyVector3(v1.pos);
 	Vector3 vt2 = transformM.MultiplyVector3(v2.pos);
 	Vector3 vt3 = transformM.MultiplyVector3(v3.pos);
+
+	/*vt1 = Vector3(-1, -1, 1);
+	vt2 = Vector3(1, 1, 1);
+	vt3 = Vector3(-1, 1, 1);*/
 
 	v1.pos = GetScreenCoord(vt1);
 	v2.pos = GetScreenCoord(vt2);
@@ -451,7 +455,7 @@ Matrix ApcDevice::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos,
 //透视投影矩阵推导:http://blog.csdn.net/popy007/article/details/1797121#comments
 Matrix ApcDevice::GenProjectionMatrix(float fov, float aspect, float nearPanel, float farPanel)
 {
-	float top = tan(0.5f * fov) * nearPanel;
+	float top = -tan(0.5f * fov) * nearPanel;
 	float bottom = -top;
 	float right = top * aspect;
 	float left = -right;
@@ -468,7 +472,7 @@ Matrix ApcDevice::GenProjectionMatrix(float fov, float aspect, float nearPanel, 
 //齐次坐标转化，除以w，然后从-1,1区间转化到0，1区间，+ 1然后/2
 Vector3 ApcDevice::GetScreenCoord(const Vector3& v)
 {
-	float x = (v.x / v.w + 1) * 0.5f * deviceWidth;
+	float x = (v.x / v.w + 1.0f) * 0.5f * deviceWidth;
 	float y = (1.0f - v.y / v.w) * 0.5f * deviceHeight;
 	float z = v.z / v.w;
 	return Vector3(x, y, z);

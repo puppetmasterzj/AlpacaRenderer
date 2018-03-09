@@ -91,14 +91,14 @@ void Update()
 
 void DoRender()
 {
-	Vector3 v1(0, 3, 1); Color c1(1.0f, 0, 0, 1.0f);
-	Vector3 v2(3, 3, 1); Color c2(0, 1.0f, 0, 1.0f);
-	Vector3 v3(3, 0, 1); Color c3(0, 0, 1.0f, 1.0f);
+	Vector3 v1(-1, -1, 1); Color c1(1.0f, 0, 0, 1.0f);
+	Vector3 v2(1, 1, 1); Color c2(0, 1.0f, 0, 1.0f);
+	Vector3 v3(-1, 1, 1); Color c3(0, 0, 1.0f, 1.0f);
 	Vertex p1(v1, c1);
 	Vertex p2(v2, c2);
 	Vertex p3(v3, c3);
 	device->Clear();
-	device->DrawPrimitive(p1, p2, p3);
+	device->DrawPrimitive(p2, p1, p3);
 	BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 }
 
