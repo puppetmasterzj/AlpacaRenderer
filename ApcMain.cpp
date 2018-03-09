@@ -15,6 +15,7 @@ void CreateRenderDevice();
 void CreateSystemWindow();
 void Update();
 void DoRender();
+void ShowFPS();
 
 int main()
 {
@@ -75,13 +76,6 @@ void Update()
 	MSG msg = { 0 };
 	while (msg.message != WM_QUIT)
 	{
-		/*static FLOAT fLastTime = (float)::timeGetTime();
-		static FLOAT fCurrTime = (float)::timeGetTime();
-		static FLOAT fTimeDelta = 0.0f;
-		fCurrTime = (float)::timeGetTime();
-		fTimeDelta = (fCurrTime - fLastTime) / 1000.0f;
-		fLastTime = fCurrTime;*/
-
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
@@ -90,19 +84,43 @@ void Update()
 		else
 		{
 			DoRender();
+			ShowFPS();
 		}
 	}
-}
+} 
 
 void DoRender()
 {
-	Vector3 v1(0, 5, 1); Color c1(1.0f, 0, 0, 1.0f);
-	Vector3 v2(4, 3, 1); Color c2(0, 1.0f, 0, 1.0f);
-	Vector3 v3(4, 0, 1); Color c3(0, 0, 1.0f, 1.0f);
+	Vector3 v1(0, 3, 1); Color c1(1.0f, 0, 0, 1.0f);
+	Vector3 v2(3, 3, 1); Color c2(0, 1.0f, 0, 1.0f);
+	Vector3 v3(3, 0, 1); Color c3(0, 0, 1.0f, 1.0f);
 	Vertex p1(v1, c1);
 	Vertex p2(v2, c2);
 	Vertex p3(v3, c3);
 	device->Clear();
 	device->DrawPrimitive(p1, p2, p3);
 	BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
+}
+
+//偷个懒，直接摘抄了一段浅墨大大的FPS计算代码
+void ShowFPS()
+{
+	static float  fps = 0;
+	static int    frameCount = 0;
+	static float  currentTime = 0.0f;
+	static float  lastTime = 0.0f;
+
+	frameCount++;
+	currentTime = timeGetTime()*0.001f;
+							  
+	if (currentTime - lastTime > 1.0f) 
+	{
+		fps = (float)frameCount / (currentTime - lastTime);  
+		lastTime = currentTime; 
+		frameCount = 0;
+	}
+
+	char strBuffer[20];
+	sprintf_s(strBuffer, 20, "%0.3f", fps);
+	TextOut(hdc, 0, 0, strBuffer, 6);
 }

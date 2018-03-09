@@ -163,10 +163,10 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 {
 	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
 	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.01f, 0));
-	Matrix transM = GenTranslateMatrix(Vector3(count * 0.01f, 0, 0));
+	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;
-	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -10.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
-	Matrix projM = GenProjectionMatrix(60.0f, 1.0f, 0.01f, 300.0f);
+	Matrix cameraM = GenCameraMatrix(Vector3(0, 1.0f, -10.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
+	Matrix projM = GenProjectionMatrix(60.0f, 1.0f, 0.1f, 30.0f);
 
 	Matrix transformM = worldM * cameraM * projM;
 	Vector3 vt1 = transformM.MultiplyVector3(v1.pos);
@@ -420,7 +420,6 @@ Matrix ApcDevice::GenRotationZMatrix(float angle)
 	m.value[1][1] = cosValue;
 	return m;
 }
-
 
 //相机矩阵推导:http://blog.csdn.net/popy007/article/details/5120158
 //DX版本实现：http://www.cnblogs.com/mikewolf2002/archive/2012/03/11/2390669.html
