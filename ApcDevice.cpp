@@ -162,7 +162,7 @@ int count = 0;
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 {
 	Matrix scaleM = GenScaleMatrix(Vector3(0.5f, 0.5f, 0.5f));
-	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.01f, 0));
+	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.004f, 0));
 	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;
 	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -5), Vector3(0, 0, 0), Vector3(0, 1, 0));
@@ -173,16 +173,13 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 	Vector3 vt2 = transformM.MultiplyVector3(v2.pos);
 	Vector3 vt3 = transformM.MultiplyVector3(v3.pos);
 
-	/*vt1 = Vector3(-1, -1, 1);
-	vt2 = Vector3(1, 1, 1);
-	vt3 = Vector3(-1, 1, 1);*/
+	/*vt1 = Vector3(-0.5, -0.5, 1);
+	vt2 = Vector3(0.5, 0.8, 1);
+	vt3 = Vector3(-0.5, 0.5, 1);*/
 
 	v1.pos = GetScreenCoord(vt1);
 	v2.pos = GetScreenCoord(vt2);
 	v3.pos = GetScreenCoord(vt3);
-	v1.pos.Print();
-	v2.pos.Print();
-	v3.pos.Print();
 	DrawTrangle2D(v1, v2, v3);
 	//DrawTrangle(v1.pos.x, v1.pos.y, v2.pos.x, v2.pos.y, v3.pos.x, v3.pos.y);
 }
@@ -213,22 +210,25 @@ void ApcDevice::DrawTrangle2D(Vertex v0, Vertex v1, Vertex v2)
 		//中心点为直线(x0, y0)，(x2, y2)上取y1的点
 		float x3 = (v1.pos.y - v0.pos.y) * (v2.pos.x - v0.pos.x) / (v2.pos.y - v0.pos.y) + v0.pos.x;
 		float y3 = v1.pos.y;
-		float t = (y3 - v0.pos.y) / (v2.pos.y - ty0);
+		float t = (y3 - v0.pos.y) / (v2.pos.y - v0.pos.y);
 
 		Vertex v3(Vector3(x3, y3, 0), Color(0, 0, 0, 0));
-		v3.LerpVertexData(v0, v2, t);
-
-		//进行x排序，此处约定x2较小
-		if (v1.pos.x > x3)
-			std::swap(v1, v3);
-
-		DrawBottomFlatTrangle(v0, v1,v3);
+	
+		v3.LerpVertexData(v2, v0, t);
+		/*if (v3.pos.x < v1.pos.x)
+			std::swap(v1, v3);*/
+		std::cout << std::endl;
+		v1.Print();
+		v3.Print();
+		DrawBottomFlatTrangle(v0, v1, v3);
 		DrawTopFlatTrangle(v1, v3, v2);
 	}
 }
 
 void ApcDevice::DrawTopFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 {
+	/*if (v0.pos.x > v1.pos.x)
+		std::swap(v0, v1);*/
 	float x0 = v0.pos.x;
 	float y0 = v0.pos.y;
 	float x1 = v1.pos.x;
@@ -241,11 +241,11 @@ void ApcDevice::DrawTopFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 
 		float xl = (y - y0) * (x2 - x0) / (y2 - y0) + x0;
 		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0));
-		vl.LerpVertexData(v2, v0, t);
+		vl.LerpVertexData(v2, v1, t);
 
 		float xr = (y - y1) * (x2 - x1) / (y2 - y1) + x1;
 		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0));
-		vr.LerpVertexData(v2, v1, t);
+		vr.LerpVertexData(v2, v0, t);
 
 		DrawLine(vl, vr);
 	}
@@ -253,6 +253,8 @@ void ApcDevice::DrawTopFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 
 void ApcDevice::DrawBottomFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 {
+	/*if (v1.pos.x > v2.pos.x)
+		std::swap(v1, v2);*/
 	float x0 = v0.pos.x;
 	float y0 = v0.pos.y;
 	float x1 = v1.pos.x;
@@ -265,11 +267,11 @@ void ApcDevice::DrawBottomFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 
 		float xl = (y - y1) * (x0 - x1) / (y0 - y1) + x1;
 		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0));
-		vl.LerpVertexData(v1, v0, t);
+		vl.LerpVertexData(v2, v0, t);
 
 		float xr = (y - y2) * (x0 - x2) / (y0 - y2) + x2;
 		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0));
-		vr.LerpVertexData(v2, v0, t);
+		vr.LerpVertexData(v1, v0, t);
 
 		DrawLine(vl, vr);
 	}

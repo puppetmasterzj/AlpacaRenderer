@@ -12,5 +12,6 @@ public:
 	~Vertex();
 
 	void LerpVertexData(Vertex& left, const Vertex& right, float t);
+	void Print();
 };
 
