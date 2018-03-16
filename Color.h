@@ -4,6 +4,7 @@ class Color
 public:
 	float r, g, b, a;
 	Color(float cr, float cg, float cb, float ca);
+	Color() {};
 	~Color();
 
 	Color operator + (const Color& right) const;

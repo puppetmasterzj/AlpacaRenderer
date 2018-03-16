@@ -3,13 +3,14 @@
 #include "Stdfx.h"
 #include "Matrix.h"
 #include "Vertex.h"
-
+#include "Texture.h"
 class ApcDevice
 {
 private:
 	int deviceWidth;
 	int deviceHeight;
 	HDC screenHDC;
+	Texture* tex;
 
 public:
 	ApcDevice();

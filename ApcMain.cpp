@@ -1,7 +1,7 @@
 //ÑòÍÕäÖÈ¾Æ÷Mainº¯Êý
 #include "Stdfx.h"
 #include "ApcDevice.h"
-//
+
 static const int windowWidth = 800;
 static const int windowHeight = 600;
 const char* windowTitle = "AlpacaRenderer";
@@ -94,9 +94,9 @@ void DoRender()
 	Vector3 v1(-1, -1,  0); Color c1(1.0f, 0, 0, 1.0f);
 	Vector3 v2( 1, -1,  0); Color c2(0, 1.0f, 0, 1.0f);
 	Vector3 v3( 0,  0,  0); Color c3(0, 0, 1.0f, 1.0f);
-	Vertex p1(v1, c1);
-	Vertex p2(v2, c2);
-	Vertex p3(v3, c3);
+	Vertex p1(v1, c1, 0, 0);
+	Vertex p2(v2, c2, 0, 1);
+	Vertex p3(v3, c3, 1, 1);
 	device->Clear();
 	device->DrawPrimitive(p2, p1, p3);
 	BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);

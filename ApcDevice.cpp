@@ -15,6 +15,9 @@ void ApcDevice::InitDevice(HDC hdc, int screenWidth, int screenHeight)
 	screenHDC = hdc;
 	deviceWidth = screenWidth;
 	deviceHeight = screenHeight;
+
+	tex = new Texture();
+	tex->LoadTexture("test.bmp");
 }
 
 void ApcDevice::DrawLine(int x0, int y0, int x1, int y1)
@@ -173,9 +176,9 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 	Vector3 vt2 = transformM.MultiplyVector3(v2.pos);
 	Vector3 vt3 = transformM.MultiplyVector3(v3.pos);
 
-	/*vt1 = Vector3(-0.5, -0.5, 1);
+	vt1 = Vector3(-0.5, -0.5, 1);
 	vt2 = Vector3(0.5, 0.8, 1);
-	vt3 = Vector3(-0.5, 0.5, 1);*/
+	vt3 = Vector3(-0.5, 0.5, 1);
 
 	v1.pos = GetScreenCoord(vt1);
 	v2.pos = GetScreenCoord(vt2);
@@ -212,7 +215,7 @@ void ApcDevice::DrawTrangle2D(Vertex v0, Vertex v1, Vertex v2)
 		float y3 = v1.pos.y;
 		float t = (y3 - v0.pos.y) / (v2.pos.y - v0.pos.y);
 
-		Vertex v3(Vector3(x3, y3, 0), Color(0, 0, 0, 0));
+		Vertex v3(Vector3(x3, y3, 0), Color(0, 0, 0, 0), 0, 0);
 	
 		v3.LerpVertexData(v2, v0, t);
 		/*if (v3.pos.x < v1.pos.x)
@@ -240,11 +243,11 @@ void ApcDevice::DrawTopFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 		float t = (y - y0) / (y2 - y0);
 
 		float xl = (y - y0) * (x2 - x0) / (y2 - y0) + x0;
-		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0));
+		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0), 0, 0);
 		vl.LerpVertexData(v2, v1, t);
 
 		float xr = (y - y1) * (x2 - x1) / (y2 - y1) + x1;
-		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0));
+		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0), 0, 0);
 		vr.LerpVertexData(v2, v0, t);
 
 		DrawLine(vl, vr);
@@ -266,11 +269,11 @@ void ApcDevice::DrawBottomFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 		float t = (y - y0) / (y2 - y0);
 
 		float xl = (y - y1) * (x0 - x1) / (y0 - y1) + x1;
-		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0));
+		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0), 0, 0);
 		vl.LerpVertexData(v2, v0, t);
 
 		float xr = (y - y2) * (x0 - x2) / (y0 - y2) + x2;
-		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0));
+		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0), 0, 0);
 		vr.LerpVertexData(v1, v0, t);
 
 		DrawLine(vl, vr);
@@ -314,6 +317,9 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 		float t = (x - x0) / (x1 - x0);
 		Color c(0,0,0,1);
 		c = Color::Lerp(v0.color, v1.color, t);
+		float u = Vertex::LerpFloat(v0.u, v1.u, t);
+		float v = Vertex::LerpFloat(v0.v, v1.v, t);
+		c = tex->Sample(u, v);
 		DrawPixel(x, y, c);
 		x += stepx;
 

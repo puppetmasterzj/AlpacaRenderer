@@ -117,6 +117,8 @@
     <ClCompile Include="ApcMain.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
@@ -124,7 +126,9 @@
     <ClInclude Include="ApcDevice.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Stdfx.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
