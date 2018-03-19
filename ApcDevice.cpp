@@ -176,9 +176,9 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 	Vector3 vt2 = transformM.MultiplyVector3(v2.pos);
 	Vector3 vt3 = transformM.MultiplyVector3(v3.pos);
 
-	vt1 = Vector3(-0.5, -0.5, 1);
+	/*vt1 = Vector3(-0.5, -0.5, 1);
 	vt2 = Vector3(0.5, 0.8, 1);
-	vt3 = Vector3(-0.5, 0.5, 1);
+	vt3 = Vector3(-0.5, 0.5, 1);*/
 
 	v1.pos = GetScreenCoord(vt1);
 	v2.pos = GetScreenCoord(vt2);
@@ -315,6 +315,8 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 	for (int i = 0; i <= dx; i++)
 	{
 		float t = (x - x0) / (x1 - x0);
+		t = std::fmin(1.0, t);
+		t = std::fmax(0.0, t);
 		Color c(0,0,0,1);
 		c = Color::Lerp(v0.color, v1.color, t);
 		float u = Vertex::LerpFloat(v0.u, v1.u, t);
