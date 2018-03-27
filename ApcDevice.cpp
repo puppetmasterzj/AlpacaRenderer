@@ -164,7 +164,7 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 int count = 0;
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 {
-	Matrix scaleM = GenScaleMatrix(Vector3(0.5f, 0.5f, 0.5f));
+	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
 	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.004f, 0));
 	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;

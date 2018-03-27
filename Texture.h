@@ -14,5 +14,6 @@ public:
 
 	void LoadTexture(const char* path);
 	Color Sample(float u, float v);
+	float Clamp(float min, float max, float value);
 };
 

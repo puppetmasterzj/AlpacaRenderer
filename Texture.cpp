@@ -36,7 +36,19 @@ void Texture::LoadTexture(const char* path)
 
 Color Texture::Sample(float u, float v)
 {
+	u = Clamp(0, 1.0f, u);
+	v = Clamp(0, 1.0f, v);
+	//暂时直接采用clamp01的方式采样
 	int intu = width * u;
 	int intv = height * v;
 	return textureData[intu][intv];
+}
+
+float Texture::Clamp(float min, float max, float value)
+{
+	if (value > max)
+		value = max;
+	if (value < min)
+		value = min;
+	return value;
 }

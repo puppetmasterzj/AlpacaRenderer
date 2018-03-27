@@ -1,6 +1,7 @@
 //ÑòÍÕäÖÈ¾Æ÷Mainº¯Êý
 #include "Stdfx.h"
 #include "ApcDevice.h"
+#include "Mesh.h"
 
 static const int windowWidth = 800;
 static const int windowHeight = 600;
@@ -10,17 +11,21 @@ HDC screenHDC = NULL;
 ApcDevice* device = NULL;
 HWND handler = NULL;
 
+Mesh* trangleMesh = NULL;
+
 static LRESULT OnEvent(HWND, UINT, WPARAM, LPARAM);
 void CreateRenderDevice();
 void CreateSystemWindow();
 void Update();
 void DoRender();
 void ShowFPS();
+void InitRes();
 
 int main()
 {
 	CreateSystemWindow();
 	CreateRenderDevice();
+	InitRes();
 	Update();
 	return 0;
 }
@@ -91,14 +96,8 @@ void Update()
 
 void DoRender()
 {
-	Vector3 v1(-1, -1,  0); Color c1(1.0f, 0, 0, 1.0f);
-	Vector3 v2( 1, -1,  0); Color c2(0, 1.0f, 0, 1.0f);
-	Vector3 v3( 0,  0,  0); Color c3(0, 0, 1.0f, 1.0f);
-	Vertex p1(v1, c1, 0, 0);
-	Vertex p2(v2, c2, 0, 1);
-	Vertex p3(v3, c3, 1, 1);
 	device->Clear();
-	device->DrawPrimitive(p2, p1, p3);
+	trangleMesh->DrawElement(device);
 	BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 }
 
@@ -123,4 +122,9 @@ void ShowFPS()
 	char strBuffer[20];
 	sprintf_s(strBuffer, 20, "%0.3f", fps);
 	TextOut(hdc, 0, 0, strBuffer, 6);
+}
+
+void InitRes()
+{
+	trangleMesh = Mesh::CreatePlane();
 }
