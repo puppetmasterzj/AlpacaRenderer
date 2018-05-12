@@ -126,5 +126,5 @@ void ShowFPS()
 
 void InitRes()
 {
-	trangleMesh = Mesh::CreatePlane();
+	trangleMesh = Mesh::CreateCube();
 }
