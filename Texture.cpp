@@ -42,6 +42,7 @@ Color Texture::Sample(float u, float v)
 	int intu = width * u;
 	int intv = height * v;
 	return textureData[intu][intv];
+	//return Color(1, 1, 1, 1);
 }
 
 float Texture::Clamp(float min, float max, float value)

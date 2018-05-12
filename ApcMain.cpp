@@ -3,8 +3,8 @@
 #include "ApcDevice.h"
 #include "Mesh.h"
 
-static const int windowWidth = 800;
-static const int windowHeight = 600;
+static const int windowWidth = 600;
+static const int windowHeight = 450;
 const char* windowTitle = "AlpacaRenderer";
 HDC hdc = NULL;
 HDC screenHDC = NULL;

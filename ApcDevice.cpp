@@ -183,6 +183,14 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 	v1.pos = GetScreenCoord(vt1);
 	v2.pos = GetScreenCoord(vt2);
 	v3.pos = GetScreenCoord(vt3);
+
+	v1.u /= vt1.w;
+	v1.v /= vt1.w;
+	v2.u /= vt2.w;
+	v2.v /= vt2.w;
+	v3.u /= vt3.w;
+	v3.v /= vt3.w;
+
 	DrawTrangle2D(v1, v2, v3);
 	//DrawTrangle(v1.pos.x, v1.pos.y, v2.pos.x, v2.pos.y, v3.pos.x, v3.pos.y);
 }
@@ -321,7 +329,8 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 		c = Color::Lerp(v0.color, v1.color, t);
 		float u = Vertex::LerpFloat(v0.u, v1.u, t);
 		float v = Vertex::LerpFloat(v0.v, v1.v, t);
-		c = tex->Sample(u, v);
+		float z = Vertex::LerpFloat(v0.pos.z, v1.pos.z, t);
+		c = tex->Sample(u/z, v/z);
 		DrawPixel(x, y, c);
 		x += stepx;
 
@@ -489,6 +498,6 @@ Vector3 ApcDevice::GetScreenCoord(const Vector3& v)
 {
 	float x = (v.x / v.w + 1.0f) * 0.5f * deviceWidth;
 	float y = (1.0f - v.y / v.w) * 0.5f * deviceHeight;
-	float z = v.z / v.w;
+	float z = 1 / v.z;
 	return Vector3(x, y, z);
 }
