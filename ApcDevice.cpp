@@ -243,8 +243,8 @@ void ApcDevice::DrawTrangle2D(Vertex v0, Vertex v1, Vertex v2)
 		/*if (v3.pos.x < v1.pos.x)
 			std::swap(v1, v3);*/
 		std::cout << std::endl;
-		v1.Print();
-		v3.Print();
+		//v1.Print();
+		//v3.Print();
 		DrawBottomFlatTrangle(v0, v1, v3);
 		DrawTopFlatTrangle(v1, v3, v2);
 	}
@@ -341,13 +341,17 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 		t = std::fmax(0.0, t);
 		Color c(0,0,0,1);
 		c = Color::Lerp(v0.color, v1.color, t);
-		float u = Vertex::LerpFloat(v0.u, v1.u, t);
-		float v = Vertex::LerpFloat(v0.v, v1.v, t);
 		float z = Vertex::LerpFloat(v0.pos.z, v1.pos.z, t);
-		c = tex->Sample(u/z, v/z);
-		DrawPixel(x, y, c, z);
-		x += stepx;
+		if (ZTest(x, y, z))
+		{
+			float u = Vertex::LerpFloat(v0.u, v1.u, t);
+			float v = Vertex::LerpFloat(v0.v, v1.v, t);
+			float realz = 1.0f / z;
+			c = tex->Sample(u * realz, v * realz);
+			DrawPixel(x, y, c);
+		}
 
+		x += stepx;
 		errorValue += dy2;
 		if (errorValue >= 0)
 		{
@@ -357,14 +361,19 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 	}
 }
 
-void ApcDevice::DrawPixel(int x, int y, const Color& color, float depth)
+bool ApcDevice::ZTest(int x, int y, float depth)
 {
-	float d = 1 / depth;
-	if (zBuffer[y][x] >= d)
+	if (zBuffer[y][x] <= depth)
 	{
-		zBuffer[y][x] = d;
-		SetPixel(screenHDC, x, y, RGB(255 * color.r, 255 * color.g, 255 * color.b));
+		zBuffer[y][x] = depth;
+		return true;
 	}
+	return false;
+}
+
+void ApcDevice::DrawPixel(int x, int y, const Color& color)
+{
+	SetPixel(screenHDC, x, y, RGB(255 * color.r, 255 * color.g, 255 * color.b));
 }
 
 void ApcDevice::DrawPixel(int x, int y)
@@ -380,7 +389,7 @@ void ApcDevice::Clear()
 	{
 		for (int j = 0; j < deviceWidth; j++)
 		{
-			zBuffer[i][j] = 9999.0f;
+			zBuffer[i][j] = 0.0f;
 		}
 	}
 }
