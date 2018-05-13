@@ -95,23 +95,25 @@ void Mesh::DrawMesh(ApcDevice* device)
 
 void Mesh::DrawElement(ApcDevice* device)
 {
+	Matrix mvp = device->GenMVPMatrix();
 	for (int i = 0; i < indexBuffer.size(); i = i + 3)
 	{
 		Vertex p1 = vertexBuffer[indexBuffer[i]];
 		Vertex p2 = vertexBuffer[indexBuffer[i + 1]];
 		Vertex p3 = vertexBuffer[indexBuffer[i + 2]];
-		device->DrawPrimitive(p1, p2, p3);
+		device->DrawPrimitive(p1, p2, p3, mvp);
 	}
 }
 
 void Mesh::DrawArray(ApcDevice* device)
 {
+	Matrix mvp = device->GenMVPMatrix();
 	for (int i = 0; i < vertexBuffer.size(); i = i + 3)
 	{
 		Vertex p1 = vertexBuffer[i];
 		Vertex p2 = vertexBuffer[i + 1];
 		Vertex p3 = vertexBuffer[i + 2];
-		device->DrawPrimitive(p1, p2, p3);
+		device->DrawPrimitive(p1, p2, p3, mvp);
 	}
 }
 

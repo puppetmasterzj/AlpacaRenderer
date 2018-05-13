@@ -175,24 +175,26 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 		DrawLine(xl, y, xr, y);
 	}
 }
+
 int count = 0;
-void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
+
+Matrix ApcDevice::GenMVPMatrix()
 {
 	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	Matrix rotM = GenRotationMatrix(Vector3((count++) * 0.004f, (count++) * 0.004f, 0));
+	Matrix rotM = GenRotationMatrix(Vector3((count++) * 0.04f, (count++) * 0.04f, 0));
 	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;
 	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -5), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	Matrix projM = GenProjectionMatrix(45.0f, (float)deviceWidth / deviceHeight, 0.1f, 30.0f);
 
-	Matrix transformM = worldM * cameraM * projM;
-	Vector3 vt1 = transformM.MultiplyVector3(v1.pos);
-	Vector3 vt2 = transformM.MultiplyVector3(v2.pos);
-	Vector3 vt3 = transformM.MultiplyVector3(v3.pos);
+	return worldM * cameraM * projM;
+}
 
-	/*vt1 = Vector3(-0.5, -0.5, 1);
-	vt2 = Vector3(0.5, 0.8, 1);
-	vt3 = Vector3(-0.5, 0.5, 1);*/
+void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp)
+{
+	Vector3 vt1 = mvp.MultiplyVector3(v1.pos);
+	Vector3 vt2 = mvp.MultiplyVector3(v2.pos);
+	Vector3 vt3 = mvp.MultiplyVector3(v3.pos);
 
 	v1.pos = GetScreenCoord(vt1);
 	v2.pos = GetScreenCoord(vt2);
@@ -240,11 +242,7 @@ void ApcDevice::DrawTrangle2D(Vertex v0, Vertex v1, Vertex v2)
 		Vertex v3(Vector3(x3, y3, 0), Color(0, 0, 0, 0), 0, 0);
 	
 		v3.LerpVertexData(v2, v0, t);
-		/*if (v3.pos.x < v1.pos.x)
-			std::swap(v1, v3);*/
-		std::cout << std::endl;
-		//v1.Print();
-		//v3.Print();
+	
 		DrawBottomFlatTrangle(v0, v1, v3);
 		DrawTopFlatTrangle(v1, v3, v2);
 	}
@@ -252,8 +250,6 @@ void ApcDevice::DrawTrangle2D(Vertex v0, Vertex v1, Vertex v2)
 
 void ApcDevice::DrawTopFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 {
-	/*if (v0.pos.x > v1.pos.x)
-		std::swap(v0, v1);*/
 	float x0 = v0.pos.x;
 	float y0 = v0.pos.y;
 	float x1 = v1.pos.x;
@@ -278,15 +274,13 @@ void ApcDevice::DrawTopFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 
 void ApcDevice::DrawBottomFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 {
-	/*if (v1.pos.x > v2.pos.x)
-		std::swap(v1, v2);*/
 	float x0 = v0.pos.x;
 	float y0 = v0.pos.y;
 	float x1 = v1.pos.x;
 	float y1 = v1.pos.y;
 	float x2 = v2.pos.x;
 	float y2 = v2.pos.y;
-	for (int y = y0; y <= y1; y++)
+	for (float y = y0; y <= y1; y++)
 	{
 		float t = (y - y0) / (y2 - y0);
 
@@ -337,17 +331,13 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 	for (int i = 0; i <= dx; i++)
 	{
 		float t = (x - x0) / (x1 - x0);
-		t = std::fmin(1.0, t);
-		t = std::fmax(0.0, t);
-		Color c(0,0,0,1);
-		c = Color::Lerp(v0.color, v1.color, t);
 		float z = Vertex::LerpFloat(v0.pos.z, v1.pos.z, t);
 		if (ZTest(x, y, z))
 		{
 			float u = Vertex::LerpFloat(v0.u, v1.u, t);
 			float v = Vertex::LerpFloat(v0.v, v1.v, t);
 			float realz = 1.0f / z;
-			c = tex->Sample(u * realz, v * realz);
+			Color c = tex->Sample(u * realz, v * realz);
 			DrawPixel(x, y, c);
 		}
 
