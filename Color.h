@@ -13,5 +13,6 @@ public:
 	Color operator * (float value) const;
 	Color operator / (float value) const;
 	static Color Lerp(const Color& left, const Color& right, float t);
+	static Color white;
 };
 

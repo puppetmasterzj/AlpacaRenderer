@@ -5,7 +5,7 @@
 
 static const int windowWidth = 600;
 static const int windowHeight = 450;
-const char* windowTitle = "AlpacaRenderer";
+const char* windowTitle = "AlpacaSoftRenderer";
 HDC hdc = NULL;
 HDC screenHDC = NULL;
 ApcDevice* device = NULL;
@@ -97,7 +97,7 @@ void Update()
 void DoRender()
 {
 	device->Clear();
-	trangleMesh->DrawElement(device);
+	trangleMesh->DrawMesh(device);
 	BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 }
 

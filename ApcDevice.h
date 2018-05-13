@@ -11,16 +11,18 @@ private:
 	int deviceHeight;
 	HDC screenHDC;
 	Texture* tex;
+	float** zBuffer;
 
 public:
 	ApcDevice();
 	~ApcDevice();
 
 	void InitDevice(HDC hdc, int screenWidth, int screenHeight);
+	void ReleaseDevice();
 	void Clear();
 
 	void DrawPixel(int x, int y);
-	void DrawPixel(int x, int y, const Color& color);
+	void DrawPixel(int x, int y, const Color& color, float depth);
 	void DrawLine(int x0, int y0, int x1, int y1);
 	void DrawTrangle(int x0, int y0, int x1, int y1, int x2, int y2);
 	void DrawTrangle2D(Vertex v1, Vertex v2, Vertex v3);

@@ -15,9 +15,23 @@ void ApcDevice::InitDevice(HDC hdc, int screenWidth, int screenHeight)
 	screenHDC = hdc;
 	deviceWidth = screenWidth;
 	deviceHeight = screenHeight;
+	
+	zBuffer = new float*[deviceHeight];
+	for (int i = 0; i < deviceHeight; i++)
+	{
+		zBuffer[i] = new float[deviceWidth];
+	}
 
 	tex = new Texture();
-	tex->LoadTexture("test.bmp");
+	tex->LoadTexture("test1.bmp");
+}
+
+void ApcDevice::ReleaseDevice()
+{
+	for (int i = 0; i < deviceHeight; i++)
+	{
+		delete[] zBuffer[i];
+	}
 }
 
 void ApcDevice::DrawLine(int x0, int y0, int x1, int y1)
@@ -165,7 +179,7 @@ int count = 0;
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3)
 {
 	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	Matrix rotM = GenRotationMatrix(Vector3(0, (count++) * 0.004f, 0));
+	Matrix rotM = GenRotationMatrix(Vector3((count++) * 0.004f, (count++) * 0.004f, 0));
 	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;
 	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -5), Vector3(0, 0, 0), Vector3(0, 1, 0));
@@ -331,7 +345,7 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 		float v = Vertex::LerpFloat(v0.v, v1.v, t);
 		float z = Vertex::LerpFloat(v0.pos.z, v1.pos.z, t);
 		c = tex->Sample(u/z, v/z);
-		DrawPixel(x, y, c);
+		DrawPixel(x, y, c, z);
 		x += stepx;
 
 		errorValue += dy2;
@@ -343,9 +357,14 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 	}
 }
 
-void ApcDevice::DrawPixel(int x, int y, const Color& color)
+void ApcDevice::DrawPixel(int x, int y, const Color& color, float depth)
 {
-	SetPixel(screenHDC, x, y, RGB(255 * color.r, 255 * color.g, 255 * color.b));
+	float d = 1 / depth;
+	if (zBuffer[y][x] >= d)
+	{
+		zBuffer[y][x] = d;
+		SetPixel(screenHDC, x, y, RGB(255 * color.r, 255 * color.g, 255 * color.b));
+	}
 }
 
 void ApcDevice::DrawPixel(int x, int y)
@@ -356,6 +375,14 @@ void ApcDevice::DrawPixel(int x, int y)
 void ApcDevice::Clear()
 {
 	BitBlt(screenHDC, 0, 0, deviceWidth, deviceHeight, NULL, NULL, NULL, BLACKNESS);
+	//ClearZ
+	for (int i = 0; i < deviceHeight; i++)
+	{
+		for (int j = 0; j < deviceWidth; j++)
+		{
+			zBuffer[i][j] = 9999.0f;
+		}
+	}
 }
 
 void ApcDevice::DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3)

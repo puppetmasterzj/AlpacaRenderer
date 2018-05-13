@@ -8,6 +8,9 @@ class Mesh
 private:
 	std::vector<Vertex> vertexBuffer;
 	std::vector<int> indexBuffer;
+
+	void DrawElement(ApcDevice* device);
+	void DrawArray(ApcDevice* device);
 public:
 	Mesh();
 	~Mesh();
@@ -16,6 +19,9 @@ public:
 	static Mesh* CreatePlane();
 	static Mesh* CreateCube();
 
-	void DrawElement(ApcDevice* device);
+	void AddVertexData(const Vector3 & pos, float u, float v, const Color& color = Color::white);
+	void AddVertexData(float posx, float posy, float posz, float u, float v, const Color& color = Color::white);
+
+	void DrawMesh(ApcDevice* device);
 };
 
