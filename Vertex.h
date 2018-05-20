@@ -15,6 +15,6 @@ public:
 	void LerpVertexData(Vertex& left, const Vertex& right, float t);
 	void Print();
 
-	static float LerpFloat(float v1, float v2, float t){ return v1 * t + v2 * (1 - t);}
+	static float LerpFloat(float v1, float v2, float t){ return v1 + (v2 - v1) * t;}
 };
 

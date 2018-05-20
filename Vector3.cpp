@@ -63,7 +63,7 @@ Vector3 Vector3::Cross(const Vector3& left, const Vector3& right)
 
 Vector3 Vector3::Lerp(const Vector3& left, const Vector3& right, float t)
 {
-	return left * t + right * (1.0f - t);
+	return left + (right - left) * t;
 }
 
 void Vector3::Print()

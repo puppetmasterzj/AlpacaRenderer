@@ -12,9 +12,9 @@ Mesh::~Mesh()
 Mesh* Mesh::CreateTrangle()
 {
 	Mesh* mesh = new Mesh();
-	mesh->AddVertexData(-1, -1, 0, 0, 0);
-	mesh->AddVertexData( 1, -1, 0, 0, 1);
-	mesh->AddVertexData( 0,  0, 0, 1, 1);
+	mesh->AddVertexData(-1, -1, 0, 0, 0, Color(1.0f, 0.0f, 0.0f, 1.0f));
+	mesh->AddVertexData( 1, -1, 0, 0, 1, Color(0.0f, 1.0f, 0.0f, 1.0f));
+	mesh->AddVertexData( 0,  0, 0, 1, 1, Color(0.0f, 0.0f, 1.0f, 1.0f));
 	int indexArray[] = { 0, 1, 2 };
 	//数组直接转vector https://blog.csdn.net/sagittarius_warrior/article/details/54089242
 	std::vector<int> index(indexArray, indexArray + sizeof(indexArray) / sizeof(int));

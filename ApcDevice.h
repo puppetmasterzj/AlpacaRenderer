@@ -29,7 +29,7 @@ public:
 	void DrawTrangle2D(Vertex v1, Vertex v2, Vertex v3);
 	void DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp);
 
-	void DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3);
+	void DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Matrix& mvp);
 	
 	Matrix GenMVPMatrix();
 	Matrix GenTranslateMatrix(const Vector3& v);

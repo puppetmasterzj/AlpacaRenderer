@@ -44,7 +44,7 @@ Color Color::operator / (float value) const
 
 Color Color::Lerp(const Color& left, const Color& right, float t)
 {
-	return left * t + right * (1.0f - t);
+	return left + (right - left) * t;
 }
 
 Color Color::white = Color(1, 1, 1, 1);

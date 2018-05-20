@@ -34,6 +34,7 @@ void ApcDevice::ReleaseDevice()
 	}
 }
 
+//https://zhuanlan.zhihu.com/p/20213658
 void ApcDevice::DrawLine(int x0, int y0, int x1, int y1)
 {
 	int dx = x1 - x0;
@@ -61,18 +62,17 @@ void ApcDevice::DrawLine(int x0, int y0, int x1, int y1)
 	//以斜率小于1为例，x轴方向每单位都应该绘制一个像素，x累加即可，而y需要判断。
 	//误差项errorValue = errorValue + k，一旦k > 1，errorValue = errorValue - 1，保证0 < errorValue < 1
 	//errorValue > 0.5时，距离y + 1点较近，因而y++，否则y不变。
-
-	//float errorValue = 0;
-	//for (int x = x0, y = y0; x <= x1; x++)
-	//{
-	//	WindowsAPI::DrawPixel(x, y);
-	//	errorValue += (float)dy / dx;
-	//	if (errorValue > 0.5)
-	//	{
-	//		errorValue = errorValue - 1;
-	//		y++;
-	//	}
-	//}
+	/*float errorValue = 0;
+	for (int x = x0, y = y0; x <= x1; x++)
+	{
+		DrawPixel(x, y);
+		errorValue += (float)dy / dx;
+		if (errorValue > 0.5)
+		{
+			errorValue = errorValue - 1;
+			y++;
+		}
+	}*/
 
 	int x = x0;
 	int y = y0;
@@ -177,17 +177,30 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 }
 
 int count = 0;
-
 Matrix ApcDevice::GenMVPMatrix()
 {
 	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	Matrix rotM = GenRotationMatrix(Vector3((count++) * 0.04f, (count++) * 0.04f, 0));
+	//Matrix rotM = GenRotationMatrix(Vector3(0, 0, 0));
+	Matrix rotM = GenRotationMatrix(Vector3(count++ * 0.04f, count++ * 0.04f, 0));
 	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;
 	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -5), Vector3(0, 0, 0), Vector3(0, 1, 0));
-	Matrix projM = GenProjectionMatrix(45.0f, (float)deviceWidth / deviceHeight, 0.1f, 30.0f);
+	Matrix projM = GenProjectionMatrix(60.0f, (float)deviceWidth / deviceHeight, 0.1f, 30.0f);
 
 	return worldM * cameraM * projM;
+}
+
+void ApcDevice::DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Matrix& mvp)
+{
+	Vector3 vt1 = mvp.MultiplyVector3(v1);
+	Vector3 vt2 = mvp.MultiplyVector3(v2);
+	Vector3 vt3 = mvp.MultiplyVector3(v3);
+
+	Vector3 vs1 = GetScreenCoord(vt1);
+	Vector3 vs2 = GetScreenCoord(vt2);
+	Vector3 vs3 = GetScreenCoord(vt3);
+
+	DrawTrangle(vs1.x, vs1.y, vs2.x, vs2.y, vs3.x, vs3.y);
 }
 
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp)
@@ -208,7 +221,6 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp
 	v3.v /= vt3.w;
 
 	DrawTrangle2D(v1, v2, v3);
-	//DrawTrangle(v1.pos.x, v1.pos.y, v2.pos.x, v2.pos.y, v3.pos.x, v3.pos.y);
 }
 
 void ApcDevice::DrawTrangle2D(Vertex v0, Vertex v1, Vertex v2)
@@ -241,7 +253,7 @@ void ApcDevice::DrawTrangle2D(Vertex v0, Vertex v1, Vertex v2)
 
 		Vertex v3(Vector3(x3, y3, 0), Color(0, 0, 0, 0), 0, 0);
 	
-		v3.LerpVertexData(v2, v0, t);
+		v3.LerpVertexData(v0, v2, t);
 	
 		DrawBottomFlatTrangle(v0, v1, v3);
 		DrawTopFlatTrangle(v1, v3, v2);
@@ -262,11 +274,11 @@ void ApcDevice::DrawTopFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 
 		float xl = (y - y0) * (x2 - x0) / (y2 - y0) + x0;
 		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0), 0, 0);
-		vl.LerpVertexData(v2, v1, t);
+		vl.LerpVertexData(v0, v2, t);
 
 		float xr = (y - y1) * (x2 - x1) / (y2 - y1) + x1;
 		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0), 0, 0);
-		vr.LerpVertexData(v2, v0, t);
+		vr.LerpVertexData(v1, v2, t);
 
 		DrawLine(vl, vr);
 	}
@@ -286,11 +298,11 @@ void ApcDevice::DrawBottomFlatTrangle(Vertex v0, Vertex v1, Vertex v2)
 
 		float xl = (y - y1) * (x0 - x1) / (y0 - y1) + x1;
 		Vertex vl(Vector3(xl, y, 0), Color(0, 0, 0, 0), 0, 0);
-		vl.LerpVertexData(v2, v0, t);
+		vl.LerpVertexData(v0, v1, t);
 
 		float xr = (y - y2) * (x0 - x2) / (y0 - y2) + x2;
 		Vertex vr(Vector3(xr, y, 0), Color(0, 0, 0, 0), 0, 0);
-		vr.LerpVertexData(v1, v0, t);
+		vr.LerpVertexData(v0, v2, t);
 
 		DrawLine(vl, vr);
 	}
@@ -325,9 +337,8 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 
 	int x = x0;
 	int y = y0;
-	int errorValue;
 
-	errorValue = dy2 - dx;
+	int errorValue = dy2 - dx;
 	for (int i = 0; i <= dx; i++)
 	{
 		float t = (x - x0) / (x1 - x0);
@@ -336,6 +347,7 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 		{
 			float u = Vertex::LerpFloat(v0.u, v1.u, t);
 			float v = Vertex::LerpFloat(v0.v, v1.v, t);
+			//Color color = Color::Lerp(v0.color, v1.color, t);
 			float realz = 1.0f / z;
 			Color c = tex->Sample(u * realz, v * realz);
 			DrawPixel(x, y, c);
@@ -353,9 +365,9 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 
 bool ApcDevice::ZTest(int x, int y, float depth)
 {
-	if (zBuffer[y][x] <= depth)
+	if (zBuffer[x][y] <= depth)
 	{
-		zBuffer[y][x] = depth;
+		zBuffer[x][y] = depth;
 		return true;
 	}
 	return false;
@@ -384,27 +396,6 @@ void ApcDevice::Clear()
 	}
 }
 
-void ApcDevice::DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3)
-{
-	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
-	Matrix worldM = scaleM * transM;
-	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -10.0f), Vector3(0, 0, 0), Vector3(0, 1.0f, 0));
-	Matrix projM = GenProjectionMatrix(0.5f, 1.0f, 0.5f, 3.0f);
-
-	Matrix transformM = worldM * cameraM * projM;
-
-	Vector3 vt1 = transformM.MultiplyVector3(v1);
-	Vector3 vt2 = transformM.MultiplyVector3(v2);
-	Vector3 vt3 = transformM.MultiplyVector3(v3);
-
-	Vector3 vs1 = GetScreenCoord(vt1);
-	Vector3 vs2 = GetScreenCoord(vt2);
-	Vector3 vs3 = GetScreenCoord(vt3);
-
-	DrawTrangle(vs1.x, vs1.y, vs2.x, vs2.y, vs3.x, vs3.y);
-}
-
 Matrix ApcDevice::GenTranslateMatrix(const Vector3& v)
 {
 	Matrix m;
@@ -425,7 +416,7 @@ Matrix ApcDevice::GenScaleMatrix(const Vector3& v)
 	return m;
 }
 
-//旋转矩阵推导:https://www.cnblogs.com/wonderKK/p/5275003.html
+//旋转矩阵推导:http://www.cnblogs.com/luweimy/p/4121789.html#3743809
 Matrix ApcDevice::GenRotationMatrix(const Vector3& rotAngle)
 {
 	Matrix rotX = GenRotationXMatrix(rotAngle.x);
@@ -484,7 +475,7 @@ Matrix ApcDevice::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos,
 	rightDir.Normalize();
 
 	Vector3 upDir = Vector3::Cross(lookDir, rightDir);
-	upDir.Normalize();//?
+	upDir.Normalize();
 
 	//构建一个坐标系，将vector转化到该坐标系，相当于对坐标系进行逆变换
 	//C = RT,C^-1 = (RT)^-1 = (T^-1) * (R^-1),Translate矩阵逆矩阵直接对x,y,z取反即可；R矩阵为正交矩阵，故T^-1 = Transpose(T)
@@ -503,16 +494,11 @@ Matrix ApcDevice::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos,
 //透视投影矩阵推导:http://blog.csdn.net/popy007/article/details/1797121#comments
 Matrix ApcDevice::GenProjectionMatrix(float fov, float aspect, float nearPanel, float farPanel)
 {
-	float top = tan(0.5f * fov * 3.1415/ 180) * nearPanel;
-	float bottom = -top;
-	float right = top * aspect;
-	float left = -right;
+	float tanValue = tan(0.5f * fov * 3.1415 / 180);
 
 	Matrix proj;
-	/*proj.value[0][0] = (right - left);
-	proj.value[1][1] = (top - bottom);*/
-	proj.value[0][0] = 2 * nearPanel / (right - left);
-	proj.value[1][1] = 2 * nearPanel / (top - bottom);
+	proj.value[0][0] = 1.0f / (tanValue * aspect);
+	proj.value[1][1] = 1.0f / (tanValue);
 	proj.value[2][2] = farPanel / (farPanel - nearPanel);
 	proj.value[3][2] = -nearPanel * farPanel / (farPanel - nearPanel);
 	proj.value[2][3] = 1;
@@ -522,8 +508,9 @@ Matrix ApcDevice::GenProjectionMatrix(float fov, float aspect, float nearPanel, 
 //齐次坐标转化，除以w，然后从-1,1区间转化到0，1区间，+ 1然后/2
 Vector3 ApcDevice::GetScreenCoord(const Vector3& v)
 {
-	float x = (v.x / v.w + 1.0f) * 0.5f * deviceWidth;
-	float y = (1.0f - v.y / v.w) * 0.5f * deviceHeight;
+	float reciprocalW = 1.0f / v.w;
+	float x = (v.x * reciprocalW + 1.0f) * 0.5f * deviceWidth;
+	float y = (1.0f - v.y * reciprocalW) * 0.5f * deviceHeight;
 	float z = 1 / v.z;
 	return Vector3(x, y, z);
 }

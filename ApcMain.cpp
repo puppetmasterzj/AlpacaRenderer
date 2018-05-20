@@ -97,7 +97,16 @@ void Update()
 void DoRender()
 {
 	device->Clear();
+	//Vector3 v1(0.0f, 1.0f, 0.0f);
+	//Vector3 v2(-1.0f, -1.0f, 0.0f);
+	//Vector3 v3(1.0f, -1.0f, 0.0f);
+	//Matrix mvp = device->GenMVPMatrix();
+	//device->DrawTrangle3D(v1, v2, v3, mvp);
 	trangleMesh->DrawMesh(device);
+	//device->DrawLine(0, 0, 600, 450);
+	//device->DrawLine(0, 450, 600, 0);
+	//device->DrawTrangle(0, 200, 300, 0, 550, 400);
+	//Ë«»º³å
 	BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 }
 
