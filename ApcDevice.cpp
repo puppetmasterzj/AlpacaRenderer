@@ -213,12 +213,12 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp
 	v2.pos = GetScreenCoord(vt2);
 	v3.pos = GetScreenCoord(vt3);
 
-	/*v1.u /= vt1.w;
+	v1.u /= vt1.w;
 	v1.v /= vt1.w;
 	v2.u /= vt2.w;
 	v2.v /= vt2.w;
 	v3.u /= vt3.w;
-	v3.v /= vt3.w;*/
+	v3.v /= vt3.w;
 
 	DrawTrangle2D(v1, v2, v3);
 }
@@ -349,7 +349,7 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 			float v = Vertex::LerpFloat(v0.v, v1.v, t);
 			//Color c = Color::Lerp(v0.color, v1.color, t);
 			float realz = 1.0f / z;
-			Color c = tex->Sample(u, v);
+			Color c = tex->Sample(u * realz, v * realz);
 			DrawPixel(x, y, c);
 		}
 
