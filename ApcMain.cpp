@@ -1,4 +1,12 @@
-//ÑòÍÕäÖÈ¾Æ÷Mainº¯Êý
+/*******************************************************************
+ * \file ApcMain.cpp
+ *
+ * \author puppet_master
+ * \date 2018/05/20
+ * \https://blog.csdn.net/puppet_master
+ * \ÃÈÃÈßÕÑòÍÕäÖÈ¾Æ÷(?¦Ø?) 
+ * \Èë¿Úº¯Êý£¬°üº¬´°¿Ú´´½¨£¬FPSÏÔÊ¾£¬Éè±¸´´½¨£¬µ÷ÓÃäÖÈ¾£¬Ë«»º³å
+ *******************************************************************/
 #include "Stdfx.h"
 #include "ApcDevice.h"
 #include "Mesh.h"
@@ -11,7 +19,7 @@ HDC screenHDC = NULL;
 ApcDevice* device = NULL;
 HWND handler = NULL;
 
-Mesh* trangleMesh = NULL;
+Mesh* currentMesh = NULL;
 
 static LRESULT OnEvent(HWND, UINT, WPARAM, LPARAM);
 void CreateRenderDevice();
@@ -102,7 +110,7 @@ void DoRender()
 	//Vector3 v3(1.0f, -1.0f, 0.0f);
 	//Matrix mvp = device->GenMVPMatrix();
 	//device->DrawTrangle3D(v1, v2, v3, mvp);
-	trangleMesh->DrawMesh(device);
+	currentMesh->DrawMesh(device);
 	//device->DrawLine(0, 0, 600, 450);
 	//device->DrawLine(0, 450, 600, 0);
 	//device->DrawTrangle(0, 200, 300, 0, 550, 400);
@@ -135,5 +143,5 @@ void ShowFPS()
 
 void InitRes()
 {
-	trangleMesh = Mesh::CreatePlane();
+	currentMesh = Mesh::CreatePlane();
 }

@@ -1,3 +1,11 @@
+/*******************************************************************
+ * \file Texture.h
+ *
+ * \author puppet_master
+ * \date 2018.5.20Ìí¼Ó×¢ÊÍ
+ * \https://blog.csdn.net/puppet_master
+ * TextureÀà
+ *******************************************************************/
 #pragma once
 #include "Color.h"
 

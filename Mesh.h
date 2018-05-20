@@ -1,3 +1,12 @@
+/*******************************************************************
+ * \file Mesh.h
+ *
+ * \author puppet_master
+ * \date 2018/05/20添加注释
+ * \https://blog.csdn.net/puppet_master
+ * \Mesh类，封装了三个基本的Mesh，三角形，正方形，正方体，
+ * \可以根据Vertex和Index绘制
+ *******************************************************************/
 #pragma once
 #include "Vertex.h"
 #include "ApcDevice.h"
