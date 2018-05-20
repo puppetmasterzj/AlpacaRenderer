@@ -23,7 +23,7 @@ void ApcDevice::InitDevice(HDC hdc, int screenWidth, int screenHeight)
 	}
 
 	tex = new Texture();
-	tex->LoadTexture("test1.bmp");
+	tex->LoadTexture("test.bmp");
 }
 
 void ApcDevice::ReleaseDevice()
@@ -179,9 +179,9 @@ void ApcDevice::DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y
 int count = 0;
 Matrix ApcDevice::GenMVPMatrix()
 {
-	Matrix scaleM = GenScaleMatrix(Vector3(1.0f, 1.0f, 1.0f));
-	//Matrix rotM = GenRotationMatrix(Vector3(0, 0, 0));
-	Matrix rotM = GenRotationMatrix(Vector3(count++ * 0.04f, count++ * 0.04f, 0));
+	Matrix scaleM = GenScaleMatrix(Vector3(2.0f, 2.0f, 2.0f));
+	Matrix rotM = GenRotationMatrix(Vector3(0, 45.0f, 0));
+	//Matrix rotM = GenRotationMatrix(Vector3(count++ * 0.04f, count++ * 0.04f, 0));
 	Matrix transM = GenTranslateMatrix(Vector3(0, 0, 0));
 	Matrix worldM = scaleM * rotM * transM;
 	Matrix cameraM = GenCameraMatrix(Vector3(0, 0, -5), Vector3(0, 0, 0), Vector3(0, 1, 0));
@@ -213,12 +213,12 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp
 	v2.pos = GetScreenCoord(vt2);
 	v3.pos = GetScreenCoord(vt3);
 
-	v1.u /= vt1.w;
+	/*v1.u /= vt1.w;
 	v1.v /= vt1.w;
 	v2.u /= vt2.w;
 	v2.v /= vt2.w;
 	v3.u /= vt3.w;
-	v3.v /= vt3.w;
+	v3.v /= vt3.w;*/
 
 	DrawTrangle2D(v1, v2, v3);
 }
@@ -347,9 +347,9 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 		{
 			float u = Vertex::LerpFloat(v0.u, v1.u, t);
 			float v = Vertex::LerpFloat(v0.v, v1.v, t);
-			//Color color = Color::Lerp(v0.color, v1.color, t);
+			//Color c = Color::Lerp(v0.color, v1.color, t);
 			float realz = 1.0f / z;
-			Color c = tex->Sample(u * realz, v * realz);
+			Color c = tex->Sample(u, v);
 			DrawPixel(x, y, c);
 		}
 
@@ -365,10 +365,13 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 
 bool ApcDevice::ZTest(int x, int y, float depth)
 {
-	if (zBuffer[x][y] <= depth)
+	if (x >= 0 && x < deviceWidth && y >= 0 && y < deviceHeight)
 	{
-		zBuffer[x][y] = depth;
-		return true;
+		if (zBuffer[y][x] <= depth)
+		{
+			zBuffer[y][x] = depth;
+			return true;
+		}
 	}
 	return false;
 }
