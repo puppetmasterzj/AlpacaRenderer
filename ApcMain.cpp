@@ -143,5 +143,5 @@ void ShowFPS()
 
 void InitRes()
 {
-	currentMesh = Mesh::CreatePlane();
+	currentMesh = Mesh::CreateCube();
 }

@@ -31,15 +31,14 @@ public:
 	void Clear();
 
 	bool ZTest(int x, int y, float depth);
-	void DrawPixel(int x, int y);
-	void DrawPixel(int x, int y, const Color& color);
-	void DrawLine(int x0, int y0, int x1, int y1);
-	void DrawTrangle(int x0, int y0, int x1, int y1, int x2, int y2);
-	void DrawTrangle2D(Vertex v1, Vertex v2, Vertex v3);
-	void DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp);
 
-	void DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Matrix& mvp);
-	
+	void DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp);
+	void RasterizeTrangle(Vertex v1, Vertex v2, Vertex v3);
+	void DrawTopFlatTrangle(Vertex v1, Vertex v2, Vertex v3);
+	void DrawBottomFlatTrangle(Vertex v1, Vertex v2, Vertex v3);
+	void DrawLine(Vertex v1, Vertex v2);
+	void DrawPixel(int x, int y, const Color& color);
+
 	Matrix GenMVPMatrix();
 	Matrix GenTranslateMatrix(const Vector3& v);
 	Matrix GenScaleMatrix(const Vector3& v);
@@ -47,18 +46,20 @@ public:
 	Matrix GenRotationXMatrix(float angle);
 	Matrix GenRotationYMatrix(float angle);
 	Matrix GenRotationZMatrix(float angle);
-
 	Matrix GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos, const Vector3& upAxis);
 	Matrix GenProjectionMatrix(float fov, float aspect, float nearPanel, float farPanel);
 
-	Vector3 GetScreenCoord(const Vector3& v);
+	//准备光栅化，透视投影除法，视口映射，三角形数据准备
+	void PrepareRasterization(Vertex& vertex);
 
-private:
+	//以下为测试光栅化函数，单独的画线，画三角形，不带其他顶点数据的绘制
+	void DrawTrangle3D(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Matrix& mvp);
+	void DrawTrangle(int x0, int y0, int x1, int y1, int x2, int y2);
 	void DrawTopFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y2);
 	void DrawBottomFlatTrangle(int x0, int y0, int x1, int y1, int x2, int y2);
-
-	void DrawTopFlatTrangle(Vertex v1, Vertex v2, Vertex v3);
-	void DrawBottomFlatTrangle(Vertex v1, Vertex v2, Vertex v3);
-	void DrawLine(Vertex v1, Vertex v2);
+	void DrawLine(int x0, int y0, int x1, int y1);
+	void DrawPixel(int x, int y);
+	Vector3 GetScreenCoord(const Vector3& v);
+	
 };
 
