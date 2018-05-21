@@ -36,11 +36,14 @@ void ApcDevice::ReleaseDevice()
 
 void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp)
 {
-	//对顶点位置进行MVP矩阵变换
+	//对顶点位置进行MVP矩阵变换，透视投影之后，w为相机空间的z
 	v1.pos = mvp.MultiplyVector3(v1.pos);
 	v2.pos = mvp.MultiplyVector3(v2.pos);
 	v3.pos = mvp.MultiplyVector3(v3.pos);
-	//透视投影之后，w为相机空间的z，z为经过映射后的屏幕空间z * 相机空间z
+	
+	//进行CVV简单剔除判断
+	if (SimpleCVVCullCheck(v1) && SimpleCVVCullCheck(v2) && SimpleCVVCullCheck(v3))
+		return;
 
 	//透视除法，视口映射，数据准备（全部改为1/z）
 	PrepareRasterization(v1);
@@ -357,6 +360,18 @@ inline void ApcDevice::PrepareRasterization(Vertex& vertex)
 	vertex.pos.z *= reciprocalW;
 	vertex.u *= vertex.pos.z;
 	vertex.v *= vertex.pos.z;
+}
+
+inline bool ApcDevice::SimpleCVVCullCheck(const Vertex& vertex)
+{
+	float w = vertex.pos.w;
+	if (vertex.pos.x < -w || vertex.pos.x > w)
+		return true;
+	if (vertex.pos.y < -w || vertex.pos.y > w)
+		return true;
+	if (vertex.pos.z < 0.0f || vertex.pos.z > w)
+		return true;
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////
