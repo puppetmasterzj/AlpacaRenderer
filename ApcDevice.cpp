@@ -40,6 +40,7 @@ void ApcDevice::DrawPrimitive(Vertex v1, Vertex v2, Vertex v3, const Matrix& mvp
 	v1.pos = mvp.MultiplyVector3(v1.pos);
 	v2.pos = mvp.MultiplyVector3(v2.pos);
 	v3.pos = mvp.MultiplyVector3(v3.pos);
+	//透视投影之后，w为相机空间的z，z为经过映射后的屏幕空间z * 相机空间z
 
 	//透视除法，视口映射，数据准备（全部改为1/z）
 	PrepareRasterization(v1);
@@ -169,12 +170,13 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 	{
 		float t = (x - x0) / (x1 - x0);
 		float z = Vertex::LerpFloat(v0.pos.z, v1.pos.z, t);
-		if (ZTest(x, y, z))
+		float realz = 1.0f / z;
+		if (ZTest(x, y, realz))
 		{
 			float u = Vertex::LerpFloat(v0.u, v1.u, t);
 			float v = Vertex::LerpFloat(v0.v, v1.v, t);
 			//Color c = Color::Lerp(v0.color, v1.color, t);
-			float realz = 1.0f / z;
+		
 			Color c = tex->Sample(u * realz, v * realz);
 			DrawPixel(x, y, c);
 		}
@@ -352,9 +354,9 @@ inline void ApcDevice::PrepareRasterization(Vertex& vertex)
 	vertex.pos.x = (vertex.pos.x * reciprocalW + 1.0f) * 0.5f * deviceWidth;
 	vertex.pos.y = (1.0f - vertex.pos.y * reciprocalW) * 0.5f * deviceHeight;
 	//将其他数据转化为1/z
-	vertex.pos.z = 1.0f / vertex.pos.z;
-	vertex.u *= reciprocalW;
-	vertex.v *= reciprocalW;
+	vertex.pos.z *= reciprocalW;
+	vertex.u *= vertex.pos.z;
+	vertex.v *= vertex.pos.z;
 }
 
 //////////////////////////////////////////////////////////////////////////
