@@ -202,14 +202,9 @@ bool ApcDevice::ZTest(int x, int y, float depth)
 	return false;
 }
 
-void ApcDevice::DrawPixel(int x, int y, const Color& color)
+inline void ApcDevice::DrawPixel(int x, int y, const Color& color)
 {
 	SetPixel(screenHDC, x, y, RGB(255 * color.r, 255 * color.g, 255 * color.b));
-}
-
-void ApcDevice::DrawPixel(int x, int y)
-{
-	SetPixel(screenHDC, x, y, RGB(255, 255, 0));
 }
 
 void ApcDevice::Clear()
@@ -240,7 +235,7 @@ Matrix ApcDevice::GenMVPMatrix()
 }
 
 
-Matrix ApcDevice::GenTranslateMatrix(const Vector3& v)
+inline Matrix ApcDevice::GenTranslateMatrix(const Vector3& v)
 {
 	Matrix m;
 	m.Identity();
@@ -250,7 +245,7 @@ Matrix ApcDevice::GenTranslateMatrix(const Vector3& v)
 	return m;
 }
 
-Matrix ApcDevice::GenScaleMatrix(const Vector3& v)
+inline Matrix ApcDevice::GenScaleMatrix(const Vector3& v)
 {
 	Matrix m;
 	m.Identity();
@@ -261,7 +256,7 @@ Matrix ApcDevice::GenScaleMatrix(const Vector3& v)
 }
 
 //旋转矩阵推导:http://www.cnblogs.com/luweimy/p/4121789.html#3743809
-Matrix ApcDevice::GenRotationMatrix(const Vector3& rotAngle)
+inline Matrix ApcDevice::GenRotationMatrix(const Vector3& rotAngle)
 {
 	Matrix rotX = GenRotationXMatrix(rotAngle.x);
 	Matrix rotY = GenRotationYMatrix(rotAngle.y);
@@ -269,7 +264,7 @@ Matrix ApcDevice::GenRotationMatrix(const Vector3& rotAngle)
 	return rotX * rotY * rotZ;
 }
 
-Matrix ApcDevice::GenRotationXMatrix(float angle)
+inline Matrix ApcDevice::GenRotationXMatrix(float angle)
 {
 	Matrix m;
 	m.Identity();
@@ -282,7 +277,7 @@ Matrix ApcDevice::GenRotationXMatrix(float angle)
 	return m;
 }
 
-Matrix ApcDevice::GenRotationYMatrix(float angle)
+inline Matrix ApcDevice::GenRotationYMatrix(float angle)
 {
 	Matrix m;
 	m.Identity();
@@ -295,7 +290,7 @@ Matrix ApcDevice::GenRotationYMatrix(float angle)
 	return m;
 }
 
-Matrix ApcDevice::GenRotationZMatrix(float angle)
+inline Matrix ApcDevice::GenRotationZMatrix(float angle)
 {
 	Matrix m;
 	m.Identity();
@@ -310,7 +305,7 @@ Matrix ApcDevice::GenRotationZMatrix(float angle)
 
 //相机矩阵推导:http://blog.csdn.net/popy007/article/details/5120158
 //DX版本实现：http://www.cnblogs.com/mikewolf2002/archive/2012/03/11/2390669.html
-Matrix ApcDevice::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos, const Vector3& upAxis)
+inline Matrix ApcDevice::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos, const Vector3& upAxis)
 {
 	Vector3 lookDir = lookPos - eyePos;
 	lookDir.Normalize();
@@ -336,7 +331,7 @@ Matrix ApcDevice::GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos,
 }
 
 //透视投影矩阵推导:http://blog.csdn.net/popy007/article/details/1797121#comments
-Matrix ApcDevice::GenProjectionMatrix(float fov, float aspect, float nearPanel, float farPanel)
+inline Matrix ApcDevice::GenProjectionMatrix(float fov, float aspect, float nearPanel, float farPanel)
 {
 	float tanValue = tan(0.5f * fov * 3.1415 / 180);
 
@@ -349,7 +344,7 @@ Matrix ApcDevice::GenProjectionMatrix(float fov, float aspect, float nearPanel, 
 	return proj;
 }
 
-void ApcDevice::PrepareRasterization(Vertex& vertex)
+inline void ApcDevice::PrepareRasterization(Vertex& vertex)
 {
 	//透视除法&视口映射
 	//齐次坐标转化，除以w，然后从-1,1区间转化到0，1区间，+ 1然后/2 再乘以屏幕长宽
@@ -364,6 +359,11 @@ void ApcDevice::PrepareRasterization(Vertex& vertex)
 
 //////////////////////////////////////////////////////////////////////////
 //以下为测试光栅化函数，单独的画线，画三角形，不带其他顶点数据的绘制
+
+void ApcDevice::DrawPixel(int x, int y)
+{
+	SetPixel(screenHDC, x, y, RGB(255, 255, 0));
+}
 
 //https://zhuanlan.zhihu.com/p/20213658
 void ApcDevice::DrawLine(int x0, int y0, int x1, int y1)
