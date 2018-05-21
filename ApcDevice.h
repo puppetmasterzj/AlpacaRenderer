@@ -47,7 +47,7 @@ public:
 	Matrix GenCameraMatrix(const Vector3& eyePos, const Vector3& lookPos, const Vector3& upAxis);
 	Matrix GenProjectionMatrix(float fov, float aspect, float nearPanel, float farPanel);
 
-	bool ZTest(int x, int y, float depth);
+	bool ZTestAndWrite(int x, int y, float depth);
 	//简单CVV剔除，只考虑三顶点均不在的情况，未做边界三角形重新构建
 	bool SimpleCVVCullCheck(const Vertex& vertex);
 	//准备光栅化，透视投影除法，视口映射，三角形数据准备

@@ -174,12 +174,11 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 		float t = (x - x0) / (x1 - x0);
 		float z = Vertex::LerpFloat(v0.pos.z, v1.pos.z, t);
 		float realz = 1.0f / z;
-		if (ZTest(x, y, realz))
+		if (ZTestAndWrite(x, y, realz))
 		{
 			float u = Vertex::LerpFloat(v0.u, v1.u, t);
 			float v = Vertex::LerpFloat(v0.v, v1.v, t);
 			//Color c = Color::Lerp(v0.color, v1.color, t);
-		
 			Color c = tex->Sample(u * realz, v * realz);
 			DrawPixel(x, y, c);
 		}
@@ -194,8 +193,9 @@ void ApcDevice::DrawLine(Vertex v0, Vertex v1)
 	}
 }
 
-bool ApcDevice::ZTest(int x, int y, float depth)
+bool ApcDevice::ZTestAndWrite(int x, int y, float depth)
 {
+	//上面只进行了简单CVV剔除，所以还是有可能有超限制的点，此处增加判断
 	if (x >= 0 && x < deviceWidth && y >= 0 && y < deviceHeight)
 	{
 		if (zBuffer[y][x] <= depth)
