@@ -1,7 +1,7 @@
 ![](https://github.com/puppetmasterzj/AlpacaRenderer/blob/master/ScreenShot/ScreenShot.png )
 
 
-https://blog.csdn.net/puppet_master
+https://blog.csdn.net/puppet_master/article/details/80317178 （Chinese Only）
 
 A Simple Rasterization Soft Renderer
 
